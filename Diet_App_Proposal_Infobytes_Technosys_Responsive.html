@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diet App — Infobytes Technosys Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f9fc;--paper:#fff;--ink:#182235;--muted:#68758a;--line:#e4e9f1;
+  --orange:#ff6938;--coral:#ff9278;--blue:#4676f5;--cyan:#1ab8c6;
+  --purple:#8a5cf4;--mint:#18a78f;--yellow:#f4bd42;--red:#e45c67;
+  --navy:#26335d;--shadow:0 22px 60px rgba(31,49,82,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+body.no-scroll{overflow:hidden}
+a{text-decoration:none;color:inherit}
+h1,h2,h3,h4{font-family:Outfit,sans-serif;margin:0}
+p{margin:0}
+.deck{width:100%}
+.slide{min-height:100vh;position:relative;padding:92px 6.2vw 100px;overflow:hidden;display:flex;align-items:center}
+.slide-inner{width:min(1240px,100%);margin:auto}
+.header{position:absolute;top:0;left:0;right:0;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 4.5vw;z-index:20}
+.logo{width:185px;height:42px;display:flex;align-items:center;overflow:hidden}
+.logo img{width:185px;height:auto}
+.counter{font:700 10px Inter,sans-serif;letter-spacing:.16em;color:#7c8799}
+.eyebrow{font:800 10px Inter,sans-serif;letter-spacing:.19em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+h1{font-size:clamp(64px,9vw,122px);line-height:.86;letter-spacing:-.075em;font-weight:800}
+h2{font-size:clamp(42px,5.4vw,76px);line-height:.92;letter-spacing:-.06em;font-weight:800}
+h3{font-size:20px;line-height:1.08}
+.lead{font-size:18px;line-height:1.58;color:var(--muted);max-width:760px}
+.small{font-size:11px;line-height:1.55;color:var(--muted)}
+.nav{
+ position:absolute;z-index:30;bottom:22px;left:50%;transform:translateX(-50%);
+ display:flex;align-items:center;gap:8px;padding:7px;background:rgba(255,255,255,.95);
+ border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(31,49,82,.14);
+ backdrop-filter:blur(16px)
+}
+.navbtn{height:42px;padding:0 17px;border:1px solid var(--line);border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font:800 12px Inter,sans-serif;cursor:pointer}
+.navbtn.primary{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 8px 22px rgba(255,105,56,.23)}
+.navbtn.disabled{opacity:.32;pointer-events:none}
+.dots{display:flex;gap:5px;max-width:235px;overflow:hidden;padding:0 4px}
+.dot{width:6px;height:6px;border-radius:50%;background:#ccd4df;flex:0 0 6px}
+.dot.active{width:22px;border-radius:10px;background:var(--orange)}
+.cover{background:
+ radial-gradient(circle at 84% 18%,#dfe8ff 0 7%,transparent 7.2%),
+ radial-gradient(circle at 77% 75%,#dff8f4 0 9%,transparent 9.2%),
+ linear-gradient(135deg,#fff 0%,#f7faff 58%,#fff7f3 100%)}
+.cover-grid{min-height:calc(100vh - 160px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:7vw}
+.cover h1 span{color:var(--orange)}
+.pill{display:inline-flex;margin-top:25px;padding:9px 13px;border-radius:999px;background:#fff0eb;border:1px solid #ffd3c5;color:#c34d25;font:800 9px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.mockup{height:470px;position:relative;display:flex;align-items:center;justify-content:center}
+.phone{width:330px;height:425px;border-radius:32px;background:#fff;border:8px solid #1f2b47;box-shadow:var(--shadow);padding:14px;position:relative;z-index:2}
+.phone-top{display:flex;align-items:center;justify-content:space-between;margin:3px 2px 18px}
+.avatar{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--orange),#ffae92)}
+.phone-title{font:800 14px Outfit}
+.mini{font:8px Inter;color:#8792a5}
+.dashboard-card{border-radius:18px;padding:17px;margin-bottom:12px}
+.d1{background:#fff0eb}.d2{background:#edf3ff}.d3{background:#e9faf6}
+.dashboard-card b{display:block;font:700 17px Outfit;margin-bottom:4px}
+.dashboard-card span{font:9px Inter;color:#718097}
+.food-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.food{height:105px;border-radius:17px;padding:13px;color:#fff}
+.food b{font:700 12px Outfit;display:block;margin-bottom:35px}.food span{font:8px Inter;opacity:.88}
+.food.a{background:linear-gradient(135deg,#ff6938,#ff9b7d)}.food.b{background:linear-gradient(135deg,#4676f5,#7c9eff)}
+.float{position:absolute;padding:13px 15px;border-radius:15px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 38px rgba(31,49,82,.11);font:800 10px Inter;z-index:3}
+.fl1{left:0;top:55px;background:#fff0eb;color:#bd4b26}.fl2{right:0;top:105px;background:#edf3ff;color:#315bc5}.fl3{left:18px;bottom:68px;background:#e9faf6;color:#0d7d6c}.fl4{right:4px;bottom:34px;background:#f1ebff;color:#6844c5}
+.problem{background:#f6f8fc}
+.problem-grid{min-height:calc(100vh - 160px);display:grid;grid-template-columns:.82fr 1.18fr;gap:6vw;align-items:center}
+.network{height:475px;border-radius:32px;background:#eef2f8;border:1px solid #dfe6ef;position:relative}
+.network:before{content:"";position:absolute;inset:50px;border:1px dashed #cdd6e3;border-radius:50%}
+.center-client{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:130px;height:130px;border-radius:50%;background:#fff;border:2px solid #ffb29d;box-shadow:0 14px 30px rgba(31,49,82,.09);display:flex;align-items:center;justify-content:center;text-align:center;font:800 14px Outfit;color:#bd4b26}
+.actor{position:absolute;padding:10px 13px;border-radius:13px;background:#fff;border:1px solid var(--line);font:700 10px Inter;box-shadow:0 10px 22px rgba(31,49,82,.06)}
+.a1{left:6%;top:16%;color:#bd4b26}.a2{left:43%;top:7%;color:#315bc5}.a3{right:6%;top:25%;color:#6844c5}.a4{left:9%;bottom:17%;color:#0d7d6c}.a5{left:43%;bottom:8%;color:#936b10}.a6{right:8%;bottom:18%;color:#b84f57}
+.network-lines{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.network-lines line{stroke:#c9d2df;stroke-width:.22;vector-effect:non-scaling-stroke}
+.center-client{z-index:3}.actor{display:flex;align-items:center;gap:7px;z-index:4}
+.ui-icon{width:14px;height:14px;display:inline-block;flex:0 0 auto;vertical-align:middle}
+.actor .ui-icon{width:13px;height:13px}
+.pain-bubble span{display:flex;justify-content:center;align-items:center;font-size:0;margin-bottom:6px}
+.pain-bubble .ui-icon{width:24px;height:24px;color:var(--orange)}
+.pain-row .icon .ui-icon{width:21px;height:21px}
+.big-icon .ui-icon{width:58px;height:58px}
+.problem-statement{margin-top:26px;padding:16px 18px;border-left:3px solid var(--orange);background:#fff;border-radius:0 14px 14px 0;font:700 12px Inter;color:#425066}
+.pain{background:#fff}
+.pain-layout{display:grid;grid-template-columns:.7fr 1.3fr;gap:5vw;align-items:center}
+.pain-visual{height:500px;position:relative}
+.pain-visual .big-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:170px;height:170px;border-radius:38px;background:linear-gradient(135deg,#ff6938,#ff9c7d);box-shadow:0 25px 55px rgba(255,105,56,.22);display:flex;align-items:center;justify-content:center;color:#fff;font-size:58px}
+.pain-orbit{position:absolute;inset:25px;border:1px dashed #cfd7e2;border-radius:50%}
+.pain-bubble{position:absolute;width:125px;min-height:75px;padding:12px;border-radius:17px;background:#fff;border:1px solid var(--line);box-shadow:0 14px 30px rgba(31,49,82,.08);font:800 10px Inter;text-align:center}
+.pain-bubble span{display:block;font-size:24px;margin-bottom:6px}
+.pb1{left:0;top:60px}.pb2{right:0;top:40px}.pb3{left:5px;bottom:65px}.pb4{right:5px;bottom:45px}.pb5{left:50%;top:0;transform:translateX(-50%)}
+.pain-list{display:grid;gap:13px}
+.pain-row{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.pain-row .icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.pain-row:nth-child(1) .icon{background:#fff0eb}.pain-row:nth-child(2) .icon{background:#edf3ff}.pain-row:nth-child(3) .icon{background:#f1ebff}.pain-row:nth-child(4) .icon{background:#e9faf6}.pain-row:nth-child(5) .icon{background:#fff5d9}
+.pain-row b{font:800 14px Outfit}.pain-row p{font:10px Inter;color:var(--muted);margin-top:3px}.impact{font:800 8px Inter;letter-spacing:.1em;color:#7d899b}
+.opportunity{background:linear-gradient(135deg,#fff,#f4f8ff)}
+.opp-grid{min-height:calc(100vh - 160px);display:grid;grid-template-columns:1fr 1.2fr;gap:7vw;align-items:center}
+.before-after{display:grid;grid-template-columns:1fr 58px 1fr;align-items:center}
+.side{padding:24px;border-radius:25px;background:#fff;border:1px solid var(--line);min-height:330px}
+.side h3{font-size:27px;margin-bottom:18px}.side ul{padding:0;margin:0;list-style:none;display:grid;gap:12px}.side li{font:600 11px Inter;color:#617087;display:flex;gap:9px;align-items:center}.side li i{width:8px;height:8px;border-radius:50%;display:block;background:#cfd6e1}.after li i{background:var(--mint)}
+.transform{width:48px;height:48px;border-radius:16px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 12px 28px rgba(255,105,56,.22)}
+.thesis{margin-top:20px;padding:18px 20px;background:#fff;border:1px solid var(--line);border-radius:18px;font:700 13px Inter}
+.journey-bar{margin-top:22px;padding:17px;border-radius:18px;background:#182235;color:#fff;display:flex;gap:0;overflow:hidden}
+.journey-bar span{flex:1;text-align:center;font:800 9px Inter;padding:8px;border-right:1px solid rgba(255,255,255,.13)}.journey-bar span:last-child{border:0}
+.flow{background:#f5f8fc}
+.flow.proposed{background:linear-gradient(135deg,#f3fffc,#f5f8ff)}
+.flow-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+.flow-badge{padding:9px 12px;border-radius:999px;font:900 9px Inter;letter-spacing:.12em;white-space:nowrap}.current{background:#ffecec;color:#c44f58}.connected{background:#e6faf5;color:#137c69}
+.mindmap{min-height:475px;margin-top:35px;position:relative}
+.mind-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:#fff;border:3px solid #ffb39d;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;font:800 21px Outfit;color:#bd4b26;z-index:3}
+.branch{position:absolute;width:43%;top:30px;bottom:30px}
+.branch.left{left:0}.branch.right{right:0}
+.branch-title{display:flex;align-items:center;gap:10px;font:800 18px Outfit;margin-bottom:15px}.branch-title .avatar2{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}.diet{background:var(--blue)}.client{background:var(--purple)}
+.flow-list{display:grid;gap:8px}
+.flow-chip{padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);font:700 10px Inter;position:relative;box-shadow:0 8px 22px rgba(31,49,82,.04)}
+.flow-list .flow-chip:after{content:"↓";position:absolute;left:50%;bottom:-13px;color:#a9b3c2;font-weight:900}.flow-list .flow-chip:last-child:after{display:none}
+.branch.left .flow-chip{border-left:3px solid var(--blue)}.branch.right .flow-chip{border-left:3px solid var(--purple)}
+.proposed-map{min-height:475px;margin-top:35px;display:grid;grid-template-columns:1fr 260px 1fr;align-items:center;gap:22px}
+.pro-col{display:grid;gap:9px}.pro-chip{padding:14px;border-radius:15px;background:#fff;border:1px solid var(--line);font:700 10px Inter;box-shadow:0 8px 22px rgba(31,49,82,.04)}.pro-chip b{display:block;font:800 13px Outfit;margin-bottom:3px}.pro-chip span{color:var(--muted);font-size:9px}
+.platform{height:320px;border-radius:42px;background:linear-gradient(145deg,#182235,#334678);color:#fff;box-shadow:0 28px 65px rgba(28,42,72,.2);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:25px}
+.platform h3{font-size:35px}.platform p{font:10px Inter;color:#cdd6e6;margin-top:8px}.platform .mini-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-top:22px}.mini-tags span{font:800 8px Inter;padding:7px 8px;border-radius:999px;background:rgba(255,255,255,.1)}
+.ai{background:linear-gradient(135deg,#f8f5ff,#f4fbff)}
+.ai-grid{min-height:calc(100vh - 160px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:7vw}
+.ai-list{display:grid;gap:10px;margin-top:30px}.ai-item{display:flex;gap:13px;align-items:center;padding:15px 17px;border:1px solid var(--line);border-radius:16px;background:#fff}.ai-icon{width:36px;height:36px;border-radius:11px;color:#fff;display:flex;align-items:center;justify-content:center;font:800 10px Inter}.ai-item:nth-child(1) .ai-icon{background:var(--orange)}.ai-item:nth-child(2) .ai-icon{background:var(--blue)}.ai-item:nth-child(3) .ai-icon{background:var(--purple)}.ai-item:nth-child(4) .ai-icon{background:var(--cyan)}.ai-item:nth-child(5) .ai-icon{background:var(--yellow);color:#6d510c}.ai-item b{font:800 13px Outfit}.ai-item span{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.ai-orb{width:370px;height:370px;border-radius:50%;margin:auto;background:radial-gradient(circle,#fff 0 26%,#fff0ea 27% 43%,#e9e3ff 44% 62%,#ddf8f3 63% 77%,transparent 78%);display:flex;align-items:center;justify-content:center;text-align:center}.ai-orb b{font:800 48px Outfit;line-height:.85;letter-spacing:-.05em;color:var(--navy)}
+.compare{background:#fff}.table-wrap{margin-top:32px;border:1px solid var(--line);border-radius:22px;overflow:auto;background:#fff;box-shadow:var(--shadow)}table{width:100%;min-width:900px;border-collapse:collapse}th,td{padding:13px 16px;border-bottom:1px solid #edf0f5;text-align:center;font:500 10px Inter}th{background:#f5f7fa;color:#7d899b;font-size:8px;letter-spacing:.12em;text-transform:uppercase}th:first-child,td:first-child{text-align:left}tr:last-child td{border-bottom:0}.mark{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;font-weight:900}.yes{background:#e6f7ee;color:#218154}.no{background:#ffeded;color:#d2545c}.part{background:#fff5d8;color:#9b7117}
+.unique{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:13px}.unique div{padding:13px 7px;border-radius:13px;background:#f7f9fc;border:1px solid var(--line);text-align:center;font:800 8px Inter;color:#536177}
+.plans{background:#f7f9fc}.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-top:34px}.plan{background:#fff;border:1px solid var(--line);border-radius:24px;padding:27px;min-height:410px;box-shadow:0 15px 35px rgba(31,49,82,.05)}.plan.pro{border:2px solid var(--orange);transform:translateY(-8px);box-shadow:0 23px 45px rgba(255,105,56,.14)}.plan .label{font:900 9px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--orange)}.plan h3{font-size:34px;margin:9px 0 4px}.plan p{font-size:10px;color:var(--muted);min-height:42px}.price{font:800 24px Outfit;color:var(--navy);margin:18px 0}.price small{font:700 8px Inter;color:#7c8799}.feature{padding:8px 0;border-bottom:1px solid #edf0f4;font-size:10px}.feature b{color:var(--mint)}
+.package{background:#fff}.package-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}.package-badge{padding:11px 14px;border-radius:999px;background:#edf3ff;color:#315bc5;font:900 9px Inter;letter-spacing:.13em}.package.propkg .package-badge{background:#f1ebff;color:#6844c5}.package.prempkg .package-badge{background:#e9faf6;color:#0d7d6c}
+.stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:38px}.stage{padding:21px;border:1px solid var(--line);border-radius:19px;background:#fff;min-height:175px;position:relative}.stage:before{content:"";position:absolute;top:0;left:20px;right:20px;height:3px;border-radius:0 0 4px 4px;background:var(--orange)}.stage:nth-child(2):before{background:var(--blue)}.stage:nth-child(3):before{background:var(--purple)}.stage:nth-child(4):before{background:var(--mint)}.stage .n{font:900 8px Inter;letter-spacing:.14em;color:#7d899b}.stage h3{font-size:22px;margin:10px 0 7px}.stage p{font-size:9px;color:var(--muted);line-height:1.5}.feature-chain{margin-top:15px;display:flex;flex-wrap:wrap;gap:5px}.feature-chain span{font:800 8px Inter;padding:6px 7px;border-radius:999px;background:#f1f4f8;color:#536177}
+.outcome{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}.outcome-card{padding:20px;border-radius:18px;background:#f7f9fc;border:1px solid var(--line)}.outcome-card b{font:800 16px Outfit}.outcome-card p{font-size:10px;color:var(--muted);margin-top:5px}.outcome-line{margin-top:12px;padding:16px;border-radius:16px;background:#182235;color:#fff;font:700 12px Inter}
+.roadmap{background:linear-gradient(135deg,#fff,#f5f8fc)}.roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:42px}.phase{padding:24px 18px;background:#fff;border-top:4px solid var(--orange);border-right:1px solid var(--line)}.phase:nth-child(2){border-top-color:var(--purple)}.phase:nth-child(3){border-top-color:var(--cyan)}.phase:nth-child(4){border-top-color:var(--blue)}.phase:last-child{border-right:0}.phase .n{font:900 8px Inter;letter-spacing:.13em;color:#7c8799}.phase h3{font-size:25px;margin:9px 0}.phase p{font-size:10px;color:var(--muted);min-height:45px}.tags{display:flex;flex-wrap:wrap;gap:5px}.tags span{font:700 8px Inter;padding:6px 7px;border-radius:999px;background:#f1f4f8;color:#58667b}
+.evolution{background:#182235;color:#fff}.evo{min-height:calc(100vh - 160px);display:flex;align-items:center}.evo-line{display:grid;grid-template-columns:repeat(4,1fr);margin-top:50px}.evo-card{padding:26px;border-left:1px solid rgba(255,255,255,.14)}.evo-card:first-child{border-left:0}.evo-card .n{font:900 8px Inter;letter-spacing:.15em;color:#aeb9ce}.evo-card h3{font-size:27px;margin:10px 0}.evo-card p{font-size:10px;line-height:1.55;color:#bdc8da}.evo-arrow{color:var(--orange);font-size:24px}
+.final{background:linear-gradient(135deg,#ff6938,#ef5c68 48%,#7858e9);color:#fff}.final-inner{min-height:calc(100vh - 160px);display:flex;align-items:center;justify-content:center;text-align:center}.final h2{font-size:clamp(52px,7vw,96px);max-width:1000px;margin:0 auto 25px}.final .lead{color:#fff0ec;margin:auto}.final .eyebrow{color:#ffe0d7}
+
+@media(max-width:950px){
+ .cover-grid,.problem-grid,.pain-layout,.opp-grid,.ai-grid{grid-template-columns:1fr}
+ .mockup{display:none}.pain-visual{display:none}
+ .pain-grid{grid-template-columns:1fr 1fr}.plan-grid,.roadmap-grid{grid-template-columns:1fr 1fr}
+ .stage-row{grid-template-columns:1fr 1fr}.proposed-map{grid-template-columns:1fr}.platform{order:-1;height:240px}.branch{position:relative;width:100%;top:auto;bottom:auto;left:auto;right:auto;margin-bottom:20px}.mindmap{display:block;height:auto}.mind-center{position:relative;left:auto;top:auto;transform:none;margin:0 auto 25px}
+ .evo-line{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+ .slide{padding:90px 5vw 100px}.pain-grid,.plan-grid,.roadmap-grid,.stage-row,.outcome{grid-template-columns:1fr}.plan.pro{transform:none}.unique{grid-template-columns:1fr 1fr}.before-after{grid-template-columns:1fr}.transform{margin:12px auto}.journey-bar{display:grid;grid-template-columns:1fr 1fr}.journey-bar span{border-bottom:1px solid rgba(255,255,255,.13)}
+ .dots{display:none}.navbtn{padding:0 12px}
+}
+
+/* Revised proposal: larger explanatory text and a consistent story across slides. */
+.caption{font:600 13px/1.5 Inter,sans-serif;color:#58677b;margin-top:17px}
+.eyebrow,.counter{font-size:11px}
+.problem-statement{font-size:14px;line-height:1.45}
+.pain-list{gap:9px}
+.pain-row{padding:12px 16px}
+.pain-row b{font-size:16px}
+.pain-row p{font-size:13px;line-height:1.4}
+.impact{font-size:10px}
+.scenario{background:linear-gradient(135deg,#fff,#f3f8ff)}
+.scenario h2,.workflow h2,.package h2,.plans h2,.roadmap h2,.decision h2{font-size:clamp(39px,4.7vw,67px)}
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}
+.scenario-card{min-height:260px;padding:27px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 14px 35px rgba(31,49,82,.05)}
+.scenario-card .n{font:800 12px Inter;color:var(--orange);letter-spacing:.12em}
+.card-icon{width:42px;height:42px;border-radius:13px;background:#fff0eb;color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.card-icon .ui-icon{width:21px;height:21px}
+.plan .plan-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:#fff0eb;color:var(--orange);margin-bottom:18px}
+.plan .plan-icon .ui-icon{width:21px;height:21px}
+.feature-tile .tile-icon{width:38px;height:38px;border-radius:12px;background:#edf3ff;color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:15px}
+.feature-tile .tile-icon .ui-icon{width:20px;height:20px}
+.phase .phase-icon{width:34px;height:34px;border-radius:10px;background:#fff0eb;color:var(--orange);display:flex;align-items:center;justify-content:center;margin:13px 0 8px}
+.phase .phase-icon .ui-icon{width:18px;height:18px}
+.decision-card .card-icon{margin-bottom:14px}
+.detail-card h3{display:flex;align-items:center;gap:10px}
+.detail-card h3 .ui-icon{width:22px;height:22px;color:var(--orange)}
+.scenario-card h3{font-size:27px;margin:17px 0 13px}
+.scenario-card p{font:500 16px/1.55 Inter;color:#526176}
+.scenario-note{margin-top:22px;padding:17px 21px;border-radius:17px;background:#182235;color:#fff;font:600 15px/1.45 Inter}
+.workflow{background:#f7f9fc}
+.workflow.with-app{background:linear-gradient(135deg,#f3fffc,#f5f8ff)}
+.journey{margin-top:24px;border:1px solid var(--line);border-radius:21px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.journey-head,.journey-row{display:grid;grid-template-columns:180px 1fr 1fr;column-gap:20px;align-items:center}
+.journey-head{padding:15px 22px;background:#182235;color:#fff;font:800 12px Inter}
+.journey-row{padding:12px 22px;min-height:68px;border-bottom:1px solid #e9edf3}
+.journey-row:last-child{border-bottom:0}
+.journey-row:nth-child(odd){background:#fbfcfe}
+.journey-step{display:flex;align-items:center;gap:11px;font:800 14px Outfit}
+.journey-step b{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#fff0eb;color:#c34d25;font:800 12px Inter;flex:0 0 26px}
+.with-app .journey-step b{background:#e6faf5;color:#137c69}
+.journey-row p{font:500 13px/1.43 Inter;color:#47566b}
+.workflow-takeaway{margin-top:17px;padding:15px 18px;border-radius:15px;background:#fff;border:1px solid var(--line);font:700 14px/1.45 Inter;color:#334158}
+.with-app .workflow-takeaway{background:#e6faf5;border-color:#b8e8db;color:#137c69}
+.plans .plan-grid{margin-top:25px;gap:14px}
+.plans .plan{min-height:0;padding:18px 22px}
+.plans .plan.pro{transform:none}
+.plans .plan h3{font-size:27px;margin:6px 0}
+.plans .plan .label{font-size:11px}
+.plans .plan p{font:500 13px/1.45 Inter;min-height:0}
+.plans .price{font-size:20px;margin:10px 0 0}
+.plans .price small{font-size:10px}
+.package-scroll{margin-top:19px;overflow-x:auto;border-radius:16px;border:1px solid var(--line);background:#fff}
+.package-matrix{width:100%;min-width:790px;border-collapse:collapse}
+.package-matrix th,.package-matrix td{padding:10px 13px;font:600 12px/1.35 Inter;border-bottom:1px solid #e9edf3;text-align:center}
+.package-matrix th{background:#f2f5fa;color:#536177;font-weight:800;letter-spacing:0;text-transform:none}
+.package-matrix th:first-child,.package-matrix td:first-child{text-align:left;width:46%}
+.package-matrix tr:last-child td{border-bottom:0}
+.package-matrix .included{color:#137c69;font-weight:900;font-size:16px}
+.package-matrix .empty{color:#aeb9c9}
+.package-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:31px}
+.detail-card{padding:25px 27px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 12px 30px rgba(31,49,82,.04)}
+.detail-card h3{font-size:25px;margin-bottom:16px}
+.detail-card ul{margin:0;padding-left:19px;display:grid;gap:12px}
+.detail-card li{font:500 14px/1.5 Inter;color:#43536a}
+.detail-example{margin-top:19px;padding:19px 22px;border-radius:18px;background:#182235;color:#fff;font:600 14px/1.55 Inter}
+.detail-example b{color:#ffb197}
+.pro-tiles,.premium-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:31px}
+.premium-tiles{grid-template-columns:repeat(4,1fr)}
+.feature-tile{padding:23px;border:1px solid var(--line);border-radius:21px;background:#fff;min-height:231px}
+.feature-tile .tile-number{display:inline-flex;width:34px;height:34px;border-radius:11px;align-items:center;justify-content:center;background:#f1ebff;color:#6844c5;font:800 12px Inter}
+.premium-tiles .tile-number{background:#e6faf5;color:#137c69}
+.feature-tile h3{font-size:23px;margin:17px 0 11px}
+.feature-tile p{font:500 14px/1.5 Inter;color:#526176}
+.package .lead,.plans .lead,.scenario .lead,.workflow .lead,.roadmap .lead,.decision .lead{font-size:17px}
+.roadmap .roadmap-grid{margin-top:31px;gap:13px}
+.roadmap .phase{border:1px solid var(--line);border-top:5px solid var(--orange);border-radius:18px;padding:22px}
+.roadmap .phase:nth-child(2){border-top-color:var(--purple)}
+.roadmap .phase:nth-child(3){border-top-color:var(--cyan)}
+.roadmap .phase:nth-child(4){border-top-color:var(--blue)}
+.roadmap .phase .n{font-size:11px;color:#526176}
+.roadmap .phase h3{font-size:24px}
+.roadmap .phase p{font:500 13px/1.45 Inter;min-height:74px}
+.roadmap .tags span{font-size:11px;padding:7px 9px}
+.decision{background:linear-gradient(135deg,#fff6f1,#f3f6ff)}
+.decision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}
+.decision-card{padding:28px;border-radius:22px;background:#fff;border:1px solid var(--line);min-height:225px}
+.decision-card .n{font:800 12px Inter;color:var(--orange)}
+.decision-card h3{font-size:26px;margin:18px 0 11px}
+.decision-card p{font:500 15px/1.5 Inter;color:#526176}
+.decision-closer{margin-top:27px;padding:19px 22px;border-radius:17px;background:#182235;color:#fff;font:700 16px/1.45 Inter}
+.demo{background:linear-gradient(135deg,#f6f9ff,#f4fffb)}
+.demo h2{font-size:clamp(39px,4.7vw,67px)}
+.demo .lead{font-size:17px}
+.demo-shell{margin-top:24px;border:1px solid var(--line);border-radius:23px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.demo-heading{padding:13px 19px;background:#182235;color:#fff;display:flex;justify-content:space-between;gap:12px;font:700 12px Inter}
+.demo-heading span:last-child{color:#ced8e7}
+.demo-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;background:#f0f4fa}
+.demo-step{border:1px solid #d8e1ed;background:#fff;color:#536177;border-radius:11px;padding:11px 8px;cursor:pointer;font:800 12px Inter;text-align:center}
+.demo-step.active{border-color:var(--orange);background:#fff0ea;color:#ba4c27}
+.demo-step:focus-visible,.demo-action:focus-visible{outline:3px solid #4676f5;outline-offset:2px}
+.demo-stage{padding:20px;min-height:318px}
+.demo-layout{display:grid;grid-template-columns:minmax(200px,.38fr) minmax(0,1fr);gap:17px;min-height:278px}
+.demo-side,.demo-main{border:1px solid var(--line);border-radius:17px;padding:19px;background:#fff}
+.demo-side{background:#f5f8fc}
+.demo-kicker{font:800 11px Inter;letter-spacing:.1em;text-transform:uppercase;color:#c34d25}
+.demo-side h3,.demo-main h3{font-size:25px;margin:10px 0}
+.demo-copy{font:500 13px/1.5 Inter;color:#506078}
+.demo-list{display:grid;gap:8px;margin-top:14px}
+.demo-line{padding:10px 12px;border:1px solid #e1e7ef;border-radius:10px;background:#fff;font:600 12px/1.4 Inter;color:#35445b}
+.demo-line.selected{border-color:#b8e8db;background:#e9faf6}
+.demo-main{display:flex;flex-direction:column;align-items:flex-start}
+.demo-main .demo-copy{max-width:690px}
+.demo-detail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;width:100%;margin:13px 0}
+.demo-detail div{padding:11px 13px;border:1px solid #e5ebf2;border-radius:11px;background:#fbfcfe;font:600 12px/1.45 Inter;color:#44546a}
+.demo-detail b{display:block;font:800 11px Inter;color:#1e3048;margin-bottom:4px}
+.demo-alert{padding:11px 13px;border-radius:11px;background:#fff5e4;border:1px solid #f4d9a1;color:#725519;font:700 12px/1.45 Inter;margin:9px 0;width:100%}
+.demo-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:13px}
+.demo-action{border:1px solid #d6e0ed;border-radius:10px;background:#fff;color:#30425b;padding:10px 13px;font:800 12px Inter;cursor:pointer}
+.demo-action.primary{background:var(--orange);border-color:var(--orange);color:#fff}
+.demo-options{width:100%;margin-top:10px;padding:11px 13px;border-radius:11px;background:#e9faf6;color:#175f54;font:600 12px/1.5 Inter}
+.plans .plan-grid .plan{display:block;color:inherit;transition:border-color .15s,transform .15s}
+.plans .plan-grid .plan:hover{border-color:var(--orange);transform:translateY(-3px)}
+.plans .plan-grid .plan.pro:hover{transform:translateY(-3px)}
+.plan-open{font:800 11px Inter;color:#c34d25;display:block;margin-top:9px}
+.roadmap-opportunity{margin-top:16px;padding:15px 18px;border:1px solid #cbe6f1;border-radius:14px;background:#effaff;color:#315169;font:600 13px/1.5 Inter}
+.roadmap-opportunity b{color:#153e61}
+@media(max-width:1000px){
+ .journey-head,.journey-row{grid-template-columns:135px 1fr 1fr;column-gap:12px}
+ .premium-tiles{grid-template-columns:1fr 1fr}
+ .scenario-grid,.decision-grid{gap:12px}
+}
+@media(max-width:700px){
+ .slide{overflow:visible;padding-bottom:108px}
+ .scenario-grid,.package-detail-grid,.pro-tiles,.premium-tiles,.decision-grid{grid-template-columns:1fr}
+ .scenario-card,.feature-tile,.decision-card{min-height:0}
+ .journey-head{display:none}
+ .journey-row{display:block;padding:15px 18px}
+ .journey-step{margin-bottom:8px}
+ .journey-row p{margin:5px 0}
+ .journey-row p:before{display:block;font-weight:800;color:#253653;margin-bottom:2px}
+ .journey-row p:nth-child(2):before{content:'DIETITIAN'}
+ .journey-row p:nth-child(3):before{content:'CLIENT'}
+ .plans .plan-grid,.roadmap .roadmap-grid{grid-template-columns:1fr}
+ .scenario h2,.workflow h2,.package h2,.plans h2,.roadmap h2,.decision h2{font-size:clamp(37px,10vw,55px)}
+ .demo h2{font-size:clamp(37px,10vw,55px)}
+ .demo-heading{display:block;line-height:1.5}
+ .demo-steps{grid-template-columns:repeat(2,1fr)}
+ .demo-layout,.demo-detail{grid-template-columns:1fr}
+ .demo-stage{min-height:0}
+}
+
+
+/* User-flow slides */
+.userflow{background:linear-gradient(135deg,#f8faff 0%,#fff 56%,#fff8f4 100%)}
+.userflow .slide-inner{width:min(1320px,100%)}
+.userflow h2{font-size:clamp(38px,4.5vw,64px)}
+.userflow .lead{font-size:15px;max-width:900px;margin-top:12px}
+.flow-diagram{margin-top:25px;padding:22px 22px 18px;border:1px solid #e6ebf3;border-radius:26px;background:rgba(255,255,255,.78);box-shadow:0 18px 48px rgba(31,49,82,.06);position:relative;overflow:hidden}
+.flow-top{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2}
+.flow-node{display:flex;align-items:center;justify-content:center;gap:8px;min-height:37px;padding:9px 13px;border:1px solid #dce4ef;background:#fff;border-radius:12px;color:#263653;font:700 11px Inter,sans-serif;text-align:center;box-shadow:0 6px 16px rgba(31,49,82,.045);max-width:100%}
+.flow-node svg{width:14px;height:14px;flex:0 0 14px;color:var(--blue)}
+.flow-node.primary{background:#fff0eb;border-color:#ffd5c7;color:#b74a27}
+.flow-node.primary svg{color:var(--orange)}
+.flow-node.accent{background:#edf3ff;border-color:#dce6ff;color:#315bc5}
+.flow-node.success{background:#e9faf6;border-color:#d0f1e8;color:#087e6d}
+.flow-node.start{background:#263653;color:#fff;border-color:#263653;padding:10px 24px}
+.flow-node.start svg{color:#fff}
+.flow-node.plan{background:#fff0eb;border-color:#ffcbb9;color:#b74a27;padding:10px 22px}
+.flow-arrow{height:18px;width:1px;background:#c8d2e1;position:relative}
+.flow-arrow:after{content:"";position:absolute;bottom:0;left:-3px;width:6px;height:6px;border-right:1px solid #9eabc0;border-bottom:1px solid #9eabc0;transform:rotate(45deg)}
+.flow-auth{display:grid;grid-template-columns:1fr 1fr;gap:48px;position:relative}
+.flow-auth:before{content:"";position:absolute;top:-9px;left:25%;right:25%;height:9px;border-top:1px solid #c8d2e1;border-left:1px solid #c8d2e1;border-right:1px solid #c8d2e1;border-radius:8px 8px 0 0}
+.flow-auth .flow-node{min-width:82px}
+.flow-branches-wrap{position:relative;margin-top:0;padding-top:30px}
+.flow-branches-wrap:before{content:"";position:absolute;top:0;left:10%;right:10%;height:1px;background:#c8d2e1}
+.flow-branches-wrap:after{content:"";position:absolute;top:-30px;left:50%;height:30px;width:1px;background:#c8d2e1}
+.flow-branches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;position:relative;z-index:1}
+.flow-branch{display:flex;flex-direction:column;align-items:stretch;gap:10px;position:relative;min-width:0}
+.flow-branch:before{content:"";position:absolute;top:-30px;left:50%;height:30px;width:1px;background:#c8d2e1}
+.flow-branch .flow-node{min-height:39px;font-size:10px;padding:8px 7px}
+.flow-branch .flow-node.branch-title{min-height:40px;background:#f1f5ff;border-color:#dfe7ff;color:#315bc5;font-size:11px}
+.flow-branch .flow-node.branch-title svg{color:#4676f5}
+.flow-branch .flow-node.muted{background:#fafbfe;color:#5e6b80}
+.flow-branch .flow-node.final{background:#e9faf6;border-color:#d0f1e8;color:#087e6d}
+.flow-branch .flow-node:not(:last-child){position:relative}
+.flow-branch .flow-node:not(:last-child):after{content:"";position:absolute;left:50%;bottom:-11px;height:11px;width:1px;background:#c8d2e1}
+.flow-note{display:flex;align-items:center;gap:9px;margin-top:17px;padding:11px 14px;border-radius:13px;background:#f4f7fc;color:#68758a;font-size:11px;line-height:1.5}
+.flow-note svg{width:16px;height:16px;color:var(--mint);flex:0 0 16px}
+.with-app .flow-node.branch-title{background:#e9faf6;border-color:#c9eee4;color:#087e6d}
+.with-app .flow-node.branch-title svg{color:#0b9a83}
+.with-app .flow-node.start{background:#263653}
+.with-app .flow-diagram{background:linear-gradient(135deg,#fff 0%,#f8fffd 100%)}
+@media(max-width:900px){
+ .flow-diagram{padding:18px 14px}
+ .flow-branches{gap:7px}
+ .flow-branch .flow-node{font-size:9px;padding:7px 4px}
+ .flow-node{font-size:10px}
+}
+@media(max-width:700px){
+ .userflow .slide-inner{width:100%}
+ .flow-diagram{padding:16px 12px;margin-top:18px;overflow:visible}
+ .flow-auth{gap:18px}
+ .flow-branches-wrap{padding-top:20px}
+ .flow-branches-wrap:before,.flow-branches-wrap:after,.flow-branch:before{display:none}
+ .flow-branches{grid-template-columns:1fr;gap:14px}
+ .flow-branch{padding:12px;border:1px solid #e6ebf3;border-radius:16px;background:#fff;gap:9px}
+ .flow-branch .flow-node{font-size:11px;min-height:36px;padding:8px 10px}
+ .flow-branch .flow-node.branch-title{min-height:38px}
+ .flow-branch .flow-node:not(:last-child):after{display:none}
+ .flow-branch .flow-node:not(.branch-title){margin-left:14px;margin-right:14px}
+ .flow-note{font-size:10px}
+}
+
+
+/* Refined comparison: fragmented current journey vs connected product journey */
+.userflow .slide-inner{width:min(1380px,100%)}
+.userflow h2{max-width:1000px;letter-spacing:-.045em}
+.userflow .lead{max-width:1000px;line-height:1.65;color:#68758a}
+.userflow .flow-diagram{margin-top:20px;padding:20px 22px 16px}
+.current-messy{background:linear-gradient(145deg,#fffaf8 0%,#fff 58%,#fff8f4 100%);border-color:#f0e2dc}
+.current-messy .messy-label,.unified-flow .unified-label{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#8b6c62;margin-bottom:14px}
+.messy-label .label-dot{width:7px;height:7px;border-radius:50%;background:#e87555;box-shadow:0 0 0 4px #ffebe4}
+.messy-channels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;position:relative;z-index:2}
+.messy-channel{min-height:66px;padding:11px 12px;border:1px solid #eadfd9;border-radius:15px;background:rgba(255,255,255,.94);box-shadow:0 8px 18px rgba(90,57,42,.05);display:flex;align-items:center;gap:10px;font-size:11px;font-weight:750;color:#39465a}
+.messy-channel .channel-icon{display:grid;place-items:center;width:31px;height:31px;flex:0 0 31px;border-radius:10px;background:#fff0e9;color:#c65b38}
+.messy-channel svg{width:16px;height:16px}
+.messy-channel small{display:block;font-size:9px;line-height:1.35;font-weight:500;color:#8a929e;margin-top:3px}
+.messy-consolidate{width:min(440px,90%);margin:25px auto 21px;position:relative;z-index:2;display:flex;align-items:center;gap:13px;padding:13px 17px;border-radius:16px;background:#fff;border:1px solid #e9c9bc;box-shadow:0 10px 24px rgba(132,76,55,.09)}
+.messy-consolidate .consolidate-icon{width:38px;height:38px;display:grid;place-items:center;flex:0 0 38px;border-radius:12px;background:#fff0e9;color:#c65b38}
+.messy-consolidate svg{width:19px;height:19px}
+.messy-consolidate strong{display:block;color:#873f2a;font-size:12px}
+.messy-consolidate span{display:block;color:#8a7d78;font-size:10px;line-height:1.45;margin-top:3px}
+.messy-tangle{position:absolute;z-index:0;left:3%;right:3%;top:77px;width:94%;height:140px;pointer-events:none;opacity:.72}
+.messy-tangle path{fill:none;stroke-width:1.25;stroke-dasharray:4 5;stroke-linecap:round}
+.messy-tangle circle{fill:#fff;stroke-width:1.5}
+.messy-lanes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;position:relative;z-index:2}
+.messy-lane{position:relative;min-width:0;padding:13px 12px 12px;border:1px solid #eadfd9;border-radius:16px;background:rgba(255,255,255,.95);box-shadow:0 8px 18px rgba(90,57,42,.035)}
+.messy-lane:before{content:"";position:absolute;top:-13px;left:50%;height:13px;border-left:1px dashed #d7b7aa}
+.messy-lane-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;color:#9a4d34;font-size:11px;font-weight:800}
+.messy-lane-head .lane-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#fff0e9;color:#c65b38;flex:0 0 28px}
+.messy-lane-head svg{width:15px;height:15px}
+.messy-step{position:relative;padding:9px 9px 9px 11px;margin-top:7px;border-radius:9px;background:#faf7f5;border:1px solid #f0e7e2;color:#667182;font-size:10px;line-height:1.4}
+.messy-step:not(:last-child):after{content:"↓";position:absolute;left:50%;bottom:-14px;z-index:2;color:#c6a99d;font-size:11px;font-weight:700}
+.messy-step.warn{background:#fff7ed;border-color:#f5dfc1;color:#99612b}
+.messy-step.end{background:#fff0e9;border-color:#f2d2c5;color:#a44c30;font-weight:700}
+.messy-footer{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:11px 13px;border-radius:12px;background:#fff2ed;color:#875b4c;font-size:10px;line-height:1.5}
+.messy-footer svg{width:16px;height:16px;flex:0 0 16px;color:#cb6848}
+/* Unified app map */
+.unified-flow{background:linear-gradient(145deg,#f7fffc 0%,#fff 58%,#f6f9ff 100%);border-color:#dcefe9}
+.unified-flow .unified-label{color:#427b70}
+.unified-label .label-dot{width:7px;height:7px;border-radius:50%;background:#19a58c;box-shadow:0 0 0 4px #ddf7ef}
+.unified-start{display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:2}
+.unified-start .flow-node{min-height:39px}
+.unified-start .flow-arrow{height:16px}
+.unified-onboard{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 12px;position:relative;z-index:2}
+.unified-onboard .flow-node{min-height:38px}
+.unified-hub-wrap{position:relative;padding:18px 0 0;margin-top:2px}
+.unified-hub-wrap:before{content:"";position:absolute;top:0;left:50%;height:18px;border-left:1.5px solid #a9d9cd}
+.unified-hub{width:min(460px,100%);margin:0 auto;position:relative;z-index:2;padding:16px 20px;border-radius:20px;background:#fff;border:1px solid #c8e9df;box-shadow:0 14px 30px rgba(28,126,104,.09);text-align:center}
+.unified-hub .hub-top{display:flex;align-items:center;justify-content:center;gap:10px;color:#087e6d;font-size:14px;font-weight:850}
+.unified-hub .hub-top .hub-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#e4f9f2;color:#0b9a83}
+.unified-hub svg{width:18px;height:18px}
+.unified-hub p{margin:8px 0 0;color:#74878a;font-size:10px;line-height:1.5}
+.unified-hub .hub-tags{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px}
+.unified-hub .hub-tags span{padding:5px 8px;border-radius:7px;background:#f0faf7;color:#3c8073;font-size:9px;font-weight:700}
+.unified-features{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:30px;z-index:2}
+.unified-features:before{content:"";position:absolute;top:-15px;left:10%;right:10%;border-top:1.5px solid #a9d9cd}
+.unified-feature{position:relative;min-width:0;padding:13px 12px 12px;border:1px solid #dcefe9;border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(31,91,79,.045)}
+.unified-feature:before{content:"";position:absolute;top:-16px;left:50%;height:16px;border-left:1.5px solid #a9d9cd}
+.unified-feature .feature-head{display:flex;align-items:center;gap:8px;color:#087e6d;font-size:11px;font-weight:850;margin-bottom:10px}
+.unified-feature .feature-icon{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#e6f9f3;color:#0b9a83;flex:0 0 29px}
+.unified-feature svg{width:15px;height:15px}
+.unified-feature .feature-step{padding:8px 9px;margin-top:7px;border-radius:9px;background:#f6fbf9;border:1px solid #e6f4ef;color:#667c79;font-size:10px;line-height:1.4}
+.unified-feature .feature-step:last-child{background:#eaf9f4;border-color:#d4f0e6;color:#087e6d;font-weight:700}
+.unified-record{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:23px auto 0;padding:12px 16px;width:min(850px,100%);border-radius:15px;background:#263653;color:#fff;box-shadow:0 12px 25px rgba(38,54,83,.12)}
+.unified-record:before{content:"";position:absolute;left:50%;top:-23px;height:23px;border-left:1.5px solid #a9d9cd}
+.unified-record .record-side{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:750}
+.unified-record .record-side svg{width:17px;height:17px;color:#8ee2cb;flex:0 0 17px}
+.unified-record .record-center{padding:7px 10px;border:1px solid rgba(255,255,255,.2);border-radius:9px;color:#b9f0e1;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.unified-record small{display:block;color:#c6cfdd;font-size:9px;font-weight:500;margin-top:3px}
+.unified-footer{display:flex;align-items:flex-start;gap:10px;margin-top:13px;padding:11px 13px;border-radius:12px;background:#eaf9f4;color:#3e776b;font-size:10px;line-height:1.5}
+.unified-footer svg{width:16px;height:16px;flex:0 0 16px;color:#0b9a83}
+@media(max-width:900px){.messy-channels,.messy-lanes,.unified-features{grid-template-columns:repeat(3,minmax(0,1fr))}.messy-tangle{display:none}.messy-lane:before{display:none}.unified-features:before{display:none}.unified-feature:before{display:none}}
+@media(max-width:600px){.messy-channels,.messy-lanes,.unified-features{grid-template-columns:1fr 1fr}.messy-channel{min-height:56px;padding:9px}.messy-lane{padding:11px 9px}.messy-step{font-size:9px}.unified-record{grid-template-columns:1fr;gap:10px}.unified-record .record-center{justify-self:start}.unified-hub{padding:14px}.unified-feature{padding:10px}.unified-feature .feature-head{font-size:10px}}
+
+
+/* Final slide: phased delivery plan */
+.phase-plan{background:linear-gradient(135deg,#fff 0%,#f6f8fc 58%,#fff8f4 100%)}
+.phase-plan .slide-inner{width:min(1320px,100%)}
+.phase-plan h2{max-width:980px;font-size:clamp(40px,4.8vw,66px)}
+.phase-plan .lead{font-size:15px;max-width:1000px;margin-top:12px}
+.phase-plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:24px}
+.phase-plan-card{position:relative;min-width:0;padding:18px 19px 16px;border:1px solid var(--line);border-radius:21px;background:rgba(255,255,255,.94);box-shadow:0 12px 28px rgba(31,49,82,.045);overflow:hidden}
+.phase-plan-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--phase-color,var(--orange))}
+.phase-plan-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:13px}
+.phase-plan-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:13px;background:var(--phase-tint,#fff0eb);color:var(--phase-color,var(--orange))}
+.phase-plan-icon svg{width:19px;height:19px}
+.phase-plan-kicker{font:800 9px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8290a3}
+.phase-plan-card h3{font-size:23px;margin:4px 0 4px;letter-spacing:-.025em}
+.phase-plan-desc{font-size:11px;line-height:1.45;color:var(--muted)}
+.phase-plan-badge{margin-left:auto;white-space:nowrap;padding:7px 9px;border-radius:999px;background:var(--phase-tint,#fff0eb);color:var(--phase-color,var(--orange));font:800 8px Inter,sans-serif;letter-spacing:.04em}
+.phase-sequence{display:grid;gap:8px}
+.phase-seq-row{display:flex;align-items:center;gap:5px;min-width:0}
+.phase-seq-row + .phase-seq-row{margin-top:1px}
+.phase-step{min-width:0;flex:0 1 auto;padding:8px 9px;border:1px solid #e8edf3;border-radius:9px;background:#f8fafc;color:#405069;font:700 9px/1.25 Inter,sans-serif;text-align:center}
+.phase-step.core{background:var(--phase-tint,#fff0eb);border-color:color-mix(in srgb,var(--phase-color,var(--orange)) 18%,white);color:#35435a}
+.phase-arrow{flex:0 0 auto;color:var(--phase-color,var(--orange));font:800 12px Inter,sans-serif}
+.phase-plan-card.phase-one{--phase-color:#e96c43;--phase-tint:#fff0e9}
+.phase-plan-card.phase-two{--phase-color:#6e59d9;--phase-tint:#f1edff}
+.phase-plan-card.phase-three{--phase-color:#159b87;--phase-tint:#e7f8f3}
+.phase-plan-card.phase-four{--phase-color:#3972dc;--phase-tint:#edf3ff}
+.phase-plan-footer{display:grid;grid-template-columns:1.15fr 1fr;gap:12px;margin-top:14px}
+.phase-note{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid #dce8f2;border-radius:14px;background:#f3f8fc;color:#53657a;font:500 10px/1.5 Inter,sans-serif}
+.phase-note svg{width:16px;height:16px;flex:0 0 16px;color:#4676f5;margin-top:1px}
+.phase-note strong{color:#243651}
+.phase-note.pro-note{background:#fff5ef;border-color:#f5ddcf}
+.phase-note.pro-note svg{color:#e96c43}
+@media(max-width:900px){.phase-plan-grid{grid-template-columns:1fr 1fr}.phase-plan-footer{grid-template-columns:1fr}.phase-plan-card h3{font-size:21px}}
+@media(max-width:620px){.phase-plan-grid{grid-template-columns:1fr}.phase-plan-card{padding:17px 15px}.phase-plan-badge{font-size:7px}.phase-plan .lead{font-size:13px}.phase-step{font-size:8px;padding:7px 6px}.phase-seq-row{gap:4px}}
+
+
+/* Refined, editorial roadmap: restrained color, clear hierarchy, no card-heavy UI */
+.phase-plan{background:#fbfaf8}
+.phase-plan:before{content:"";position:absolute;left:0;top:0;width:7px;height:100%;background:#ef754d}
+.phase-plan .slide-inner{width:min(1360px,100%)}
+.phase-plan .eyebrow{color:#b85b3e;margin-bottom:12px}
+.phase-plan h2{font-size:clamp(38px,4.1vw,58px);line-height:.98;letter-spacing:-.055em;max-width:900px}
+.phase-plan .lead{font-size:14px;line-height:1.55;max-width:900px;margin-top:12px;color:#687180}
+.phase-roadmap{margin-top:24px;border-top:1px solid #e6e2dc}
+.roadmap-band{display:grid;grid-template-columns:minmax(250px, .78fr) minmax(0,1.6fr);gap:25px;align-items:center;padding:15px 18px 15px 8px;border-bottom:1px solid #e6e2dc;position:relative}
+.roadmap-meta{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:start;gap:13px;min-width:0}
+.roadmap-index{font:500 26px/1 Outfit,sans-serif;letter-spacing:-.06em;color:var(--phase-color);padding-top:2px}
+.roadmap-title{min-width:0}
+.roadmap-kicker{font:800 8px/1.3 Inter,sans-serif;letter-spacing:.16em;color:#92908b;margin-bottom:5px}
+.roadmap-title h3{font:600 20px/1.1 Outfit,sans-serif;letter-spacing:-.025em;color:#202b3b;margin-bottom:5px}
+.roadmap-title p{font:400 10px/1.4 Inter,sans-serif;color:#777f89;max-width:220px}
+.roadmap-label{font:800 8px/1 Inter,sans-serif;letter-spacing:.09em;padding:7px 8px;border:1px solid var(--phase-border);border-radius:4px;color:var(--phase-color);background:var(--phase-tint);margin-top:1px;white-space:nowrap}
+.roadmap-flow{display:grid;gap:9px;min-width:0;padding:3px 0}
+.roadmap-flow-line{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}
+.roadmap-flow-line span{font:500 10px/1.35 Inter,sans-serif;color:#344052;white-space:nowrap}
+.roadmap-flow-line b{font:500 12px/1 Inter,sans-serif;color:var(--phase-color);font-weight:500;opacity:.8}
+.band-one{--phase-color:#c45d3d;--phase-tint:#fff3ed;--phase-border:#f0d5c9}
+.band-two{--phase-color:#6d59b8;--phase-tint:#f4f0ff;--phase-border:#dfd7f4}
+.band-three{--phase-color:#258777;--phase-tint:#edf8f4;--phase-border:#d1e9e1}
+.band-four{--phase-color:#4772b5;--phase-tint:#eff4fc;--phase-border:#d7e2f3}
+.roadmap-footnotes{display:grid;grid-template-columns:1fr 1.35fr;gap:12px;margin-top:14px}
+.roadmap-note{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:1px solid #e7e3dd;background:#fff;border-radius:7px;color:#67717d}
+.roadmap-note p{font:400 10px/1.5 Inter,sans-serif}
+.roadmap-note strong{font-weight:700;color:#293548}
+.note-mark{display:grid;place-items:center;flex:0 0 19px;width:19px;height:19px;border-radius:50%;background:#f1eee8;color:#596474;font:700 11px Inter,sans-serif}
+.note-pro{background:#fff7f2;border-color:#f1ded4}
+.note-pro .note-mark{background:#f7e3d9;color:#b85b3e}
+@media(max-width:900px){.roadmap-band{grid-template-columns:1fr;gap:12px;padding:16px 8px}.roadmap-title p{max-width:none}.roadmap-footnotes{grid-template-columns:1fr}.phase-plan .lead{font-size:13px}}
+@media(max-width:620px){.phase-plan .slide-inner{padding-bottom:20px}.roadmap-meta{grid-template-columns:34px minmax(0,1fr) auto;gap:9px}.roadmap-index{font-size:23px}.roadmap-title h3{font-size:18px}.roadmap-flow-line{gap:6px}.roadmap-flow-line span{font-size:9px;white-space:normal}.roadmap-flow-line b{font-size:10px}.roadmap-label{font-size:7px;padding:6px}.roadmap-note p{font-size:9px}}
+
+
+
+/* Responsive, single-viewport presentation mode */
+html, body { width:100%; height:100%; min-height:0; overflow:hidden; }
+body { overscroll-behavior:none; }
+.slide {
+  width:100%; height:100vh; height:100dvh; min-height:0; max-height:100dvh;
+  padding:76px 5vw 78px; overflow:hidden; isolation:isolate;
+  display:flex; align-items:center; justify-content:center;
+}
+.slide-inner {
+  width:min(1320px,100%); max-width:100%; min-width:0; margin:auto;
+  flex:0 0 auto; transform-origin:center center; will-change:transform;
+}
+.header { height:58px; padding:0 clamp(16px,4vw,56px); }
+.logo, .logo img { max-width:min(185px,42vw); }
+.nav { bottom:max(10px,env(safe-area-inset-bottom)); gap:6px; padding:5px; max-width:calc(100vw - 20px); }
+.navbtn { height:38px; padding:0 13px; white-space:nowrap; }
+.dots { max-width:min(235px,35vw); }
+.slide h1 { overflow-wrap:anywhere; }
+.slide img, .slide svg { max-width:100%; }
+.table-wrap { max-width:100%; }
+
+@media (max-height:760px) and (min-width:701px) {
+  .slide { padding-top:64px; padding-bottom:66px; }
+  .header { height:48px; }
+  .nav { bottom:8px; }
+  .eyebrow { margin-bottom:10px; }
+  .lead { font-size:clamp(12px,1.15vw,16px); line-height:1.42; }
+  .cover-grid, .problem-grid, .opp-grid, .ai-grid { min-height:0; }
+  .mockup { height:min(420px,60vh); }
+  .phone { transform:scale(.88); }
+  .pain-visual { height:min(420px,58vh); }
+  .mindmap, .proposed-map { min-height:0; height:min(430px,62vh); }
+  .phase-roadmap { margin-top:16px; }
+  .roadmap-band { padding-top:10px; padding-bottom:10px; }
+  .roadmap-footnotes { margin-top:9px; }
+}
+@media (max-width:900px) {
+  .slide { padding-left:4vw; padding-right:4vw; }
+  .slide-inner { width:100%; }
+  .header { padding-inline:4vw; }
+  .lead { font-size:15px; }
+  .mockup { height:390px; }
+  .phone { transform:scale(.88); }
+  .network { height:min(420px,48vh); }
+  .pain-visual { height:400px; }
+  .mindmap { min-height:0; height:430px; }
+  .proposed-map { min-height:0; height:430px; }
+  .ai-orb { width:min(320px,35vw); height:min(320px,35vw); }
+}
+@media (max-width:700px) {
+  .slide { padding:62px 16px 66px; }
+  .header { height:48px; padding-inline:16px; }
+  .logo { width:145px; height:32px; }
+  .logo img { width:145px; max-width:145px; }
+  .counter { font-size:9px; letter-spacing:.08em; }
+  .nav { bottom:max(7px,env(safe-area-inset-bottom)); gap:5px; padding:4px; border-radius:13px; }
+  .navbtn { height:34px; padding:0 10px; font-size:10px; border-radius:9px; }
+  .dots { max-width:27vw; gap:4px; }
+  .dot { width:5px; height:5px; flex-basis:5px; }
+  .dot.active { width:15px; }
+  .eyebrow { font-size:8px; letter-spacing:.14em; margin-bottom:9px; }
+  h1 { font-size:clamp(38px,12vw,64px); line-height:.9; }
+  h2 { font-size:clamp(29px,8vw,44px); line-height:.98; }
+  h3 { font-size:17px; }
+  .lead { font-size:12px; line-height:1.45; }
+  .small { font-size:9px; }
+  .cover-grid, .problem-grid, .opp-grid, .ai-grid { min-height:0; grid-template-columns:minmax(0,1fr); gap:12px; }
+  .cover-grid { grid-template-columns:1fr .82fr; gap:8px; }
+  .cover-grid > div:first-child { min-width:0; }
+  .cover .pill { margin-top:12px; font-size:7px; padding:7px 9px; }
+  .mockup { height: min(45vh,320px); min-width:0; }
+  .phone { width:260px; height:340px; padding:10px; border-width:6px; border-radius:25px; transform:scale(.78); transform-origin:center center; }
+  .phone-top { margin-bottom:10px; }
+  .dashboard-card { padding:10px; margin-bottom:8px; }
+  .dashboard-card b { font-size:13px; }
+  .food { height:76px; padding:9px; }
+  .food b { margin-bottom:19px; }
+  .float { font-size:7px; padding:7px 8px; border-radius:9px; }
+  .fl1 { top:8%; left:-2%; }.fl2 { top:17%; right:-3%; }.fl3 { bottom:12%; left:-2%; }.fl4 { bottom:7%; right:-2%; }
+  .problem-grid { grid-template-columns:.85fr 1.15fr; gap:12px; }
+  .network { height: min(42vh,300px); border-radius:18px; }
+  .network:before { inset:25px; }
+  .center-client { width:82px; height:82px; font-size:10px; }
+  .actor { padding:6px 7px; font-size:7px; gap:4px; border-radius:8px; }
+  .actor .ui-icon { width:10px; height:10px; }
+  .problem-statement { margin-top:12px; padding:10px; font-size:9px; }
+  .pain-layout { grid-template-columns:.7fr 1.3fr; gap:12px; }
+  .pain-visual { height: min(45vh,310px); }
+  .pain-visual .big-icon { width:100px; height:100px; border-radius:25px; }
+  .pain-visual .big-icon .ui-icon { width:40px; height:40px; }
+  .pain-orbit { inset:10px; }
+  .pain-bubble { width:88px; min-height:54px; padding:7px; font-size:7px; border-radius:10px; }
+  .pain-bubble .ui-icon { width:17px; height:17px; }
+  .pain-list { gap:7px; }
+  .pain-row { grid-template-columns:30px 1fr; gap:8px; padding:9px; border-radius:11px; }
+  .pain-row .icon { width:28px; height:28px; border-radius:8px; }
+  .pain-row .icon .ui-icon { width:15px; height:15px; }
+  .pain-row b { font-size:10px; }
+  .pain-row p { font-size:8px; }
+  .impact { display:none; }
+  .side { padding:13px; min-height:0; border-radius:15px; }
+  .side h3 { font-size:18px; margin-bottom:10px; }
+  .side ul { gap:8px; }
+  .side li { font-size:9px; gap:6px; }
+  .thesis { margin-top:10px; padding:12px; font-size:10px; }
+  .journey-bar { margin-top:10px; padding:9px; }
+  .journey-bar span { font-size:7px; padding:5px 3px; }
+  .flow-head { align-items:flex-start; flex-direction:column; gap:8px; }
+  .flow-badge { padding:6px 8px; font-size:7px; }
+  .mindmap { height: min(54vh,380px); margin-top:14px; }
+  .mind-center { width:95px; height:95px; font-size:13px; border-width:2px; }
+  .branch { width:44%; top:10px; bottom:10px; }
+  .branch-title { font-size:12px; gap:6px; margin-bottom:8px; }
+  .branch-title .avatar2 { width:24px; height:24px; border-radius:7px; font-size:11px; }
+  .flow-list { gap:7px; }
+  .flow-chip { padding:8px 7px; border-radius:9px; font-size:8px; }
+  .flow-list .flow-chip:after { bottom:-11px; font-size:10px; }
+  .proposed-map { height:auto; min-height:0; grid-template-columns:1fr 100px 1fr; gap:7px; margin-top:14px; }
+  .pro-col { gap:6px; }
+  .pro-chip { padding:8px 6px; border-radius:9px; font-size:8px; }
+  .pro-chip b { font-size:10px; }
+  .pro-chip span { font-size:7px; }
+  .platform { height:220px; padding:10px; border-radius:22px; }
+  .platform h3 { font-size:19px; }
+  .platform p { font-size:8px; }
+  .platform .mini-tags { margin-top:10px; }
+  .mini-tags span { font-size:6px; padding:5px; }
+  .ai-grid { grid-template-columns:1fr .8fr; gap:10px; }
+  .ai-list { gap:6px; margin-top:12px; }
+  .ai-item { gap:7px; padding:8px; border-radius:10px; }
+  .ai-icon { width:26px; height:26px; border-radius:8px; }
+  .ai-item b { font-size:10px; }
+  .ai-item span { font-size:7px; }
+  .ai-orb { width:100%; height:auto; aspect-ratio:1; }
+  .ai-orb b { font-size:clamp(20px,6vw,34px); }
+  .table-wrap { margin-top:14px; }
+  .phase-plan h2 { font-size:clamp(28px,7.5vw,40px); }
+  .phase-plan .lead { font-size:11px; }
+  .roadmap-band { padding:10px 3px; gap:8px; }
+  .roadmap-meta { grid-template-columns:27px minmax(0,1fr) auto; gap:7px; }
+  .roadmap-index { font-size:20px; }
+  .roadmap-title h3 { font-size:15px; }
+  .roadmap-title p { font-size:8px; }
+  .roadmap-kicker { font-size:7px; }
+  .roadmap-label { font-size:6px; padding:5px; }
+  .roadmap-flow { gap:5px; }
+  .roadmap-flow-line { gap:5px; }
+  .roadmap-flow-line span { font-size:8px; }
+  .roadmap-flow-line b { font-size:9px; }
+  .roadmap-footnotes { gap:6px; margin-top:8px; }
+  .roadmap-note { padding:7px 8px; gap:7px; }
+  .roadmap-note p { font-size:8px; }
+}
+@media (max-width:420px) {
+  .cover-grid { grid-template-columns:1fr .62fr; gap:4px; }
+  .phone { transform:scale(.62); }
+  .problem-grid { grid-template-columns:1fr; }
+  .problem-grid .network { height:210px; }
+  .problem-grid .network:before { inset:20px; }
+  .problem-grid .problem-copy .eyebrow { margin-bottom:5px; }
+  .problem-grid .problem-copy h2 { font-size:28px; }
+  .problem-grid .problem-copy .lead { font-size:10px; }
+  .pain-layout { grid-template-columns:.55fr 1.45fr; }
+  .pain-bubble { width:70px; font-size:6px; }
+  .ai-grid { grid-template-columns:1fr .65fr; }
+  .navbtn { padding:0 8px; }
+  .dots { max-width:21vw; }
+}
+@media (max-height:620px) {
+  .slide { padding-top:54px; padding-bottom:52px; }
+  .header { height:42px; }
+  .navbtn { height:30px; }
+  .nav { bottom:4px; }
+  .eyebrow { margin-bottom:6px; }
+  .lead { font-size:11px; line-height:1.35; }
+  .cover-grid, .problem-grid, .opp-grid, .ai-grid { min-height:0; }
+  .mockup { height:250px; }
+  .phone { transform:scale(.62); }
+  .pain-visual { height:260px; }
+  .pain-list { gap:5px; }
+  .pain-row { padding:7px; }
+  .mindmap { height:310px; margin-top:10px; }
+  .proposed-map { height:300px; margin-top:10px; }
+  .platform { height:250px; }
+  .roadmap-band { padding-top:7px; padding-bottom:7px; }
+  .roadmap-footnotes { margin-top:6px; }
+}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAAAADgCAYAAABcmMvSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAIPASURBVHhe7d13dFRV2wXwPekhDUJCCC303nvvvQqKKIgiHZSiYG8o6quInaKoiKKCqAioSJHee+81EHqA9J7M98dJPpKTO+Xe6ZP9WytL2XcgyZRbnnvOc3R6vV4PIiIiIiIiIiIickseckBERERERERERETugwVAIiIiIiIiIiIiN8YCIBERERERERERkRtjAZCIiIiIiIiIiMiNsQBIRERERERERETkxlgAJCIiIiIiIiIicmMsABIREREREREREbkxFgCJiIiIiIiIiIjcGAuAREREREREREREbowFQCIiIiIiIiIiIjfGAiAREREREREREZEbYwGQiIiIiIiIiIjIjbEASERERERERERE5MZYACQiIiIiIiIiInJjLAASERERERERERG5MRYAiYiIiIiIiIiI3BgLgERERERERERERG6MBUAiIiIiIiIiIiI3xgIgERERERERERGRG2MBkIiIiIiIiIiIyI2xAEhEREREREREROTGWAAkIiIiIiIiIiJyYywAEhERERERERERuTEWAImIiIiIiIiIiNwYC4BERERERERERERujAVAIiIiIiIiIiIiN8YCIBERERERERERkRtjAZCIiIiIiIiIiMiNsQBIRERERERERETkxlgAJCIiIiIiIiIicmMsABIREREREREREbkxFgCJiIiIiIiIiIjcGAuAREREREREREREbowFQCIiIiIiIiIiIjfGAiAREREREREREZEbYwGQiIiIiIiIiIjIjbEASERERERERERE5MZYACQiIiIiIiIiInJjLAASERERERERERG5MZ1er9fLIRGRq8hMT8WdK6dw78YlZKQmIi05ARmpichMT4W3XzH4+gfBt1gwfIsFI7RMZYRXqAkvb1/5nyEisoqszHTcv3kZ965fQELsNWSkJSMzLRmZ6anQeXjC28cPXr7+8PUPRFDJMggJL4/ipcrDL7C4/E8Ruaz01ETcvnQC8XdikJ6aiPSUBKQnJyArMwM+/gG5x+Yg+PgH8dhMBCAnJxt3r51H7NWzSEuOQ0ZKItJSEpCRmgxPbx/4FgsSn5uAYISElUWpqNpuc9zgcdM9JN2/hfs3LuHezUtITbiHzPQUZKSlICc7E17evvDy9Ye3jz+KhYQhJLwcQsLLIzi8LDw8POV/imyIBUD6f6mJ9/Dv1y/KsVFlqzdBi/4T5FiVg2sX4fKx7XJsls7D30DxiCg5tok1X7+IlMR7cmxQ4x5PoWK9dnKsiiXPjb007T0KFWq3kmObiY05hzO7/8alI1tx5+op3L9xGXp9jvwwgzw8PFEishJKRdVCpQYdUbNlX5SIrCQ/zK60fPYsodN5wNuvGHz8AuAXEIISpSsiNLIyIirVhZePn/xwi21Z8gHuXjsvx0b5FgtCr/Gz7X5SkJp0H2u+fknVewoAWg2chMgqDXB61984uWOFvNnlVGvaHfU6PirHhdj7vWuJEhFR6DT8DTm2WErCXZzduwbRx7cj+th2xMachZZTq5Dwcois2hBlazRFtSbdUbZGU/khToPvc+dlq/e5KbcuHcepnStx9eQe3L5yEvG3r6r6HHh4eKJ46YooVaEmouq1Q63W/VGybFX5YVZ35eQu7F/9nRwb1aDz46jSuIsc29T+1d/iysndcmxU7wkfwy8gRI5VWfftq0iKuy3HJvn4B6L3+Nnw8PSSN1ldctxtrP32VTk2qsfo9xFQvJQc21Vy/B2c3fMvzh9Yj1uXT+BuzDlkZabLDzMqOKwMwivURvlaLVCzZR+Uqd4EOp1OfpjTcdbjZlZmOv6Z+xyyszLkTUZFVm2IVg89K8c2F3N6L/b+vUCOjfLw9ELvCR/Dxy9A3qTa1ZO7ceHwRkQf24Grp/YgPSVBfohJXj5+iKhUF2WqNUZUndao3qIX/ANLyA8jK2IBkP5f/J0YzB5WWY6NqtW6P4bO+F2OVVk+ezQOrftRjs1SrVkPPPneX3JsE7Mej0Li3RtybFD/KXPRrM8YOVbFkufGXga98B0adRsux1Z17/oF7P17Ac7s/huxMefkzRYrFVULNVv1R/N+4xASXk7ebHNaPnu24OXtizLVm6BK4y5o1PUJqxVGT25fgSXvmL7IlvV99nOLbzCotXre89i1Yo4cG1Uqqjae+foAPDw8sWnxTGxcPFN+iMtpPWgyeo2fLceFOMt71xyRVRti4ry9cqyJXp+Dk9tX4vD6H3Fu/3rVFwvmCA4rg5qt+qNF//EoFVVb3uxQfJ87L2u+z025dfkEDqz+Dqd3/437Ny/Lmy0WVq46arUWx2Zb3ew9tH4xln80So6N6j3hY7QaOEmObWrZ+0/g2OZlcmzUi0ujERQaKceqfPJUDdy/cUmOzdJ91HtoN+QFOba62Jhz+HxkHTk2asrCEwgrV02ObS4tKQ77/12IkztWIObUXtU3G00JCo1E9eY90bTPaJSr0Uze7FCuctz8Z95z2L1irhwb5eHhiQnz9qJ05XryJpvR6/X46pmWuH7+kLzJqKa9R2PA1HlybLa4W1dw4N+FOLLxF5vs9z08vRBVtw0adBmKBl2GcmS4DbAHILm0c/vW4tiW3+SY3MSVk7uw5O3B+HxkXez4/VObFP8A4Hb0KWxd+iE+ebI6lr3/BK6fOyg/pEjIykzHlRM7sWnxTHw6oia+f6knrqoccaCkdtuHUKlBBzk2aeOP7yBVxahbS8XGnMXev7+WY5N6jZtl95GK5Bh6vR7Ht/yOL8c0xNKZQ3B69z82uYgBgITY69j711eYM7YRFr3cC5ePbZMfQuQQl49uxeLX+mPuuMbYtWKOTS4CkbtP3rZsNj4dUQu/ffAkbl48Jj+EnNjmn99H3K1oOS6S4m5FY/W85/HRsMpY+83LuHpyt9WLfwCQeO8GDqz5Hl9PaoNvn++EkztWahpZZ02udtzs/OSb8A8KlWOjcnKysXr+83JsUwfXLlJd/PMLCEHXp9+WY7MkxF7Hqs+fwWdP18bmX9632X4/JzsLl45swYpPxmH20MrY+OM7yEhNkh9GFmABkFzev/OnIy05Xo7JhcXdisYPr/TBN1M74OSOlcjJyZYfYhM52Vk4tnkZ5j/TEkveHozEe+aP+HQ3er0eFw9txIKp7bF05mMWF+J6jZ8NnU7dIScl4S42/KDtREWLNV+/iOysTDk2qnrzXqjatLsckxuKuxWN76Z1wa/vDcWdK6flzTaj1+tx4eAGfDetC5a9NwwJsdfkhxDZxZ0rp/Ht853x3fSuOLtvjd0KCznZWTi6cSnmTWiK3z8cgbSkOPkh5IQy0pLx1xf2HSnpbDJSk7B63vP49Kma2LVijl0LGdHHd2DJ24Mxb0JTxJzZJ2+2C1c8bvoHlkCnJ16TY5MuHdmCE9uWy7FNZKQmYcOiGXJsUoehLyMgJFyOTdqzch4+e7o29v3zjc2Kt0qS4+9g00/v4rORdXB4/U/yZtJI3dUYkRNKvHcD6xe+LsfkgvT6HOz44zN8OaYhzh9YL2+2q5M7VuKLUfWx7+8FdrvIcVYnti3H3PFNce3sAXmT2SKrNECj7k/KsUn7/vkGty6fkGOru3DwP5zZs1qOjfL08kbPcbPkmNzQ8S2/Y864Jog+7tierMe2/IYvxzbCqZ2r5E1ENpOTnYXNv7yPeRObO/QzoNfrcWTDL/hybEOc3bdG3kxO6Oy+NTi+xbJWQa7q7L41+HJsQ+xaMcduN7KV3Lx4DN9MaY/V86fZtQDpysfNFv0nIKxcdTk2ac2Cl5CVkSbHVrdlyYeqBymElqmsunVBWnI8fni1L/6eOxWZ6SnyZrtJvHsDf3w0Er/MeJiDfqyABUByC/v+/gYxp+3T84ZsIy0pDt+/2ANrvn4RGWnJ8maHSEuOx6ovnsXPbw5EZnqqvLlIib8Tg0Uv9cS1M/vlTWbrNnImfP2D5NionOwsrJ5n22kVen0O/v1KfZ+iZn3HIrx8DTkmN7Pvn2+w7P0nNDW3toW0pDgseXswb3yRXSTeu4GvJ7XBhkUz7HJha46E2OtY/Fp/bHKDPpRFwer504rURbter8e/X72Axa/1R9ytK/Jmh8jJycauP7/EvInNce/6RXmz1bn6cdPD0ws9x30oxybF3YrGtmWm+8paIv72Vez68ws5NqnH6A/g6eUjxwYlx9/BwuldcX7/OnmTw5za+RfmP9MCt6NPyZtIBRYAyS3o9TlY+dkEh95hI+0SYq/hm+c64tKRLfImp3Bmz2osnN4VKfGx8qYiJS05HovfeAhJ92/Jm8wSWCIC7R5TX2i7eHgTTm633Yqj+/5WP8rQPygUnR2w0ibZ18G1i7Dq82ds0qvJEnq9HluXzsKqL54t8iOUyXbuXD2DBVPaq+4zZS8bF8/UNA2O7EvM1Ckax8vsrAwse38Ydi7/XN7kFO5eO48FU9tbNKPDFHc5btZo0QdVGneVY5O2L/tY1ZRjtdZ885LqQQkV67dH7bYPybFBGalJWDi9G25cOCJvcrh71y9i4fSu7AlrARYAyW3cvHgMO//4TI7Jyd25egZfT26L29En5U1OJebMPiyY2h7xd2LkTUVKctxtLJ89Wo7N1uaR5zSt5rjmm5eQlZkuxxZLS47Hxh/fkWOTOj3xmuom0eRarp87iL++nCzHTmXf3wtw+D/2xSHrizm9F98+19HpF3HY/Mv7LAK6gH1/L3D7mToZqUlY9HJvp5/ynBx3Gwund8WFg//JmyzmbsfNXuM/goenlxwblZGWjDULXpJjq7hychdObP1Djo3S6TzQ24zV7vP78+MxTn1dlhx/B0veedSsQi4VxgIguZVNi991muH2ZFpq4j389MYAm94ps6a7187j57cGqb7z5m7O7Vur+cTRy9sX3Ue/L8cm3b9xCTt++0SOLbb55/eRHH9Hjo0KK1cdLfpPkGNyI9lZmVj2/hNOM+XRkMgqDVC/0xA5JrLI/RuXsPj1AUhJuCtvckqbf3kfZ/f+K8fkRMRMnYluO1NHr9fj9w9H4PLRrfImp5SRloylMx/Hnatn5E2aueNxM6JiHTTpNVKOTTq+5TdcObFTji2i1+uxev401UWvRt2fRGTVhnJs0MG1i3BcZZHREbo9PRM6nU6OyQwsAJJbyUhLxt9znPvOEwk5OdlYOvNxu/QisaYb5w9j+UfqTwasTafTwcPDU9WXNW3+5QM5Mlu9DoNRoU5rOTZp69JZSLyrrumxMfeuX8SelfPk2KSe4z5UfUeYXMvulXNx99p5OXYqPn4BePS1n1X19CEyJSM1CT+/Nchlin95Vnwy3uV+5qLm5sWj2PmHc06NtdTGH95WtciEM0hLjsfPbw602qra7nrc7PrUDPgFhMixUXq9Hv/MfU51sc6YI//9rLoPt49/ILo9bf4sl4y0ZPy36C05djpNeo1E3Q6PyDGZiQVAcjtn9qy22zLspN2/X03HxcOb5FizkFLlUblRZzTq/iRaPvQM2g6ehpYPPYNG3YajUoMOCCoZKf8VzY5v/QNblzp29dearfrh7TWpqr7e+icRL/16FaM/2YgeYz5QdUdQFn1sm0UjN3tP+Fj1nbuMtGSs+cZ60yrWLHhB9bTiKo27okaLPnJMbiQrMx1bl6hv/p2fh6cXylZvggZdhqLT8DfQc+yH6D9lLvo++zl6jPkf2g6ehjrtBiK8Qk3Vn4M8fZ/9XNMqhUTG/PbBk6p7ohqi03kgomId1GrdH60eehYdhr6CzsPfQNvBz6NZnzGo1qwHQkqV1/wZyC/x3g2s+vwZOSYns2nxTMTfvirHLu3Etj+xZcn/5Fgz/6BQVKjdCvU7P4YW/Seg7eBpaDVwEpr0GomqTbujZNmqVvnMIHdmy7L/DZdj1dz5uFksJAwdhr4ixyZdP38IB/5dKMeaZKanYv336vtotn/sRQSGlpZjg/asmm/xjfag0EhUbdodrQdNQbeRM9Fn4qcYMHUeeo2fjS4jZqBJr5Go3LATfIsFy3/VLOEVaqLPxE/lmFTQ6a1ZmiaXFn8nBrOHVZZjo2q17o+hMyzrdbF89mgcWvejHFskOKwMJn97VPPORcmsx6NU7RT7T5mLZn3GyLEqWp6bp2etRXiFmnJsM/6BJeDl4yfHRl05uQvfPtfRojtjOp0OlRp0RP1OQ1CtWU8Eh5WRH1LI/RuXcGbPahzZuMTiXjRePn6YtOAQQstUkTep5qjPHgCc2fMPVnw6AUn3bsqbTOr7zGdoMWCiHJvt9w9H4MiGX+TYKJ1OhzGfbkH52i3lTapcOrIZC1/oLsdGeXh6YeL8fYioWEfe9P9SE+8hOd46o1AWv94f965fkGODAktEYNTHG+VYk2JBJVAsJEyOC9Hy3q3erCcemva1HNucp6e3Wb/Tsc3LsOz9J+TYLCXLVkW7IS+gdpsBZveITE28h3P71uHY5l9xdt9a5GRnyQ8ppH6nIRj8ymI5thu+z01z9ve5kkPrfrSoxyty95M1WvRCgy7DUKVxF7NGziTH38GpHStxbMvvuHjIstd2wrw9KFO1kRwbdGj9Yiz/aJQcG9V7wsdoNXCSHNvUsvefwLHNy+TYqBeXRiMo1LKbn588VQP3b1ySY4vUaNEHT8z8U441i405h89HGj4uK5my8ATCylWTY9XSkuLw+ah6mhdHyxNeoSYadH4cNVv3R6mo2iYLXCkJd3Hh4AYc3bQUZ/euMeu4YczDL36Phl2HybHZ3P24mZ2ViS9G11d1rAKAgOKlMPX7E2btB43Z+OM72PTTu3JsVPGIKExZeBxe3r7yJoO+GF0fd66clmOTPDy90KjbcDTtPQplazQz+f5FbluAmxeO4vjW33F0069m9Zv18vHDuC92oHTlevImUoEFQPp/Wk5wrVGE0FLkMkeLARPR9xnrLQriKgXAZ7464NQ7xpycbMyf2AI3Lx6VN5mtatPu6D7yXYtGsF0+tg1rv3nFokJg9WY9Mfw9y6d8OOqzl+fe9YtYMKWd6l54jbo/iUHTv5VjsyXevYHPnq6NjLRkeZNRZas3wbgvd5p1gqFEr8/B/IktVK9u1qzvWPSfPEeObUbtiVhQyUi8uMT0CZQ1Ofq9aws/vTEQZ/b8I8dG6XQ6dBz2Gjo+8ZpF0+3jbkVjy5IPcXDN9wZ7ZYWWqYyJ8/Za9QaXI/F97hzSkuLw2ci6SI67LW8yW90Oj6DriHdQsmxVeZPZrp7ag3XfvorLx7bJm8xSt8MjGPKa+TeWWAA0zhYFQAB47I1fUafdQDnWxJEFwL++nIy9f30lx2YLL18DXUe+i9ptBsibzHbv+kVs+HEGjm5cKm8yW2BoaUxdeFzzcaUoHDdP7liJJW8PlmOTWg+agl7jP5JjsyXEXsfnI+uoPld+9LWfUa+D+T/v9fOHMH9iCzk2qWTZqhg64w+UiqolbzJbTk42jm1ehs0/vYvYmHPy5v/X99nP2YPbCjgFmNzWvr++Vt0rgWxvz8p5mot/Pn4BePiFhXjq/b8tKv4BQMV67TD2863oPvp9zSceZ/etcbmeL0pCy1RG30lfyLFJlq4QFlQyEm0HPy/HJl07ewAH1y6SY7MdXLNIdfHPLyAEXZ/iSpNFQfSJHXJkUo+xH6Lzk29q3pfkKR4RhQFT52H8nF2IrNJA3gxPL28MfmWxRRcxRErWf/+m5uKfX2BxDHt7OYa89otFxT8AKF+rBUbOXo9OT7wOnU79ZcrJbX+6XG/homj1/OeQnpooxy7lxvnD2P/PN3JstjYPT8UzXx+wqPiH3HO4wS//iOHvrUKx4JLyZrMk3buJDT+8LcdmKwrHzdptBqBSg45ybNKeVfMQG3NWjs227ttXVBf/KtRprar4BwCXjmyRI5NKlK6IcV9st6j4BwAeHp5o0PlxPLvgkHhPKPTZrtW6H4t/VqL+yErkInJysrHyc/ddccwVZaanYtNidUPY8xQLCcPI2f+hYTdtUwyU6HQeaPfodAx9+3fV05jzrP/uNTlySXXaDVJ9Nzw18Z4cqdb20ekICS8nxyb99/2bSE9JkGOT0lMT8d8P6gt5HYa+onlaHbmO2JhzqhuiR9VtgzYPT5Vji0RWbYixX2xHk55PF8i7jHgb5Wo0K5ARWerO1TOaCxnFIypg3BfbUbNVX3mTZjqdBzo/+Sb6Pqt+wYjSVRogOztTjsnJJMRex3/fvynHLmXtt69qusbQ6Tzw0PNfo+e4WaoWozClerOeGPv5NpQoXVHeZJY9q+Zr6u1clI6bvcZ/pLpgmZ2VidXzp8mxWWLO7MPRTepGdup0OvQeP1uOTdIyaGbA1HlmT9s2h6eXDzo98TpGfrSuQO/CkPByGDhN2zGKCmMBkNzajfOHsevPL+WYHOTw+sVITbovxyb5+AXgyXdXoWz1JvImq6jRog8Gv7JY9UEduRdOFw7+J8cuR6fToUqTbnJsVFqy+gKczNvXH91Gqi8KJ92/hU0/vSfHJm355QPV/Q5Llq1q9+le5Bh3rpySI5Oa9rasZ5ohXt6+eOj5r9Fx6KtA7gI0bQdru4ggMmb3ijmaChmBoaXx9IdrVTfVN1fzfuPQcZh5N9n8AkLQZ+KnGD9nJ8LL15A3kxPau+orXDt7QI5dwp2rZ3Dx0AY5NkvfZz8vVKSylpJlq2LEB/8isESEvMmknOws7P1Lfd/SonTcjKzSAI26PynHJp3btxZn9qyWY5P+nT9ddb/0Bl2GomyNpnJsUuzVM3JkVGiZKqjSuKscW0VU3bYY88kmFI+IgoeHJx55+QerFhqLOhYAye1t/PEdxN+JkWNygD2r5suRWfpO+kLTwUyN2m0GoN2QF+TYLLtXzpMjl1RG5bRqTy9vOdKkQZehKFezuRybtHvFXKO9QmRxt65ouiHQY8wHVvtdyblpGdVqqxsTebqMmIHpP13AsLf/0Nz3ksiQ9JQEHP7vZzk2ycPDE4++8qNVFsIyptPw101+xup3GoIpC4+j5UPPaJo2TI6Rk5ONVZ9NhF6fI29yertXzFVdmEFu7+Tm/cbJsVWFlqmCh19cqOl4sf/fhcjOypBjo4racbPr0+/A1z9Ijk3696vpyM4yf3Ty0U2/4srJXXJslI9fALqPel+OzaJ2gIbaawa1QstUwbNfH8D0ny+iYr128mayAI+S5PYyUpPw95zJckx2dvHwJty6fEKOTarRojcadRsuxzbR+ck3Na2gfHbPv4i7dUWOXY5/kLreMf6BxeVIs97jZ6s+ScvOysC/X02XY4PWLHgRWRlpcmxUpQYdUat1fzkmN5WWHC9HJhULtv1d6ZBS5eHt6y/HRBY7sOZ7ZKQmybFJLR96VlM/LLU8PDwxcNo3iiP0w8pVx9MfrsHgVxZrGvFEjnf9/CFNN+YcSRTNf5Jjk4JCI626OKExVZt0Q2MNowyT427j2Obf5NioonbcDCwRgfaPvyjHJt29dh67/jSv33ZWRhrWLzRv9HN+bQc/j6CS2hb+UTurxx4j8nyLBWv+fcgwFgCpSDi962+c3LFSjsmODq9Xf7Lk4eGJ7qP/J8c24+HphW4j1U8rzcnJxpGN5q866Kw8vQo33TUmNFLdqpjGlK/dEnXbPyLHJp3d+y/O7v1XjguJPr4DJ7Ytl2OjPDw80XuC+j4qVLQkx9+VIyKXcXCN+gWVigWXRKcn1F+cahVRqS5q51sx1tu3GLqMmIFnFxxC5UadCzyWXM+GH97W1HvOUU5uX6GpaN5p+Ovw8Q+UY5vp8tRb8PELkGOTtIwIVsvVj5utH56qqdfi5p//h6T7t+S4kO2/fax6YEFIeDm0fdT8m+KWSklw7dewKGMBkIqM1fOe03TAJuu4oKFXSvUWvSxeWUqtWq37aeofdOGg+t/P2aQkqJvGUaZaYzmySI8xH2i6W/vvVy8gJztLjv+fXq9XNVIwT6MeT6F05fpyTG5My8VSzOk9ckTkEhLv3tA0Mr9Z37Hws+IIcHN0HPoqgkIjUaNFH0z+9gg6Dn2VrRnchKvN1Dm3f50cmRRQvBQa9xghxzYVFBqJ+p0fl2OTrpzYiazMdDk2qCgeN728fTVNtU1PScD6ha/LcQGJ925g26/qbz53G/WepnPoPD5+xeTIqGtn1S8aQs6BBUByOX6BxdGw2xOKS4QbE38nBv8tekuOyQ5uR59EQux1OTapWd+xcmQXTfuob0589eRuZKanyrFLuR19Uo6MqtmqnxxZJKRUebQeNEWOTYqNOWt0CtHh9YtVNxr39Q9C1xFvyzG5ucBQ9VNNDq79UY6IXMK5/WvlyCQPD0+06Ddejm0uolJdvLg0Gk/M/BPFI6LkzeQkSpatipot+8ixSad2/oVTO1fJsdPR6/W4eHizHJvUuPuTDilYa+k3mJmeguhj2+TYoKJ63Kzb4RFE1W0jxyYdWmf8nHT9d68jIy1Zjo0qV7M5Gmgo9uYXWOLBqrvmiLt1xS0GPxRFLACSywmvUBMPv7AQrR56Vt5k0p6V83D9/CE5JhvTcrfUL7A4qtpodSlTtExFzcpMx8XDm+TYpag5kJeKqo1IGzQAbv/YiwjScDK5+ef3kRx3W46RkZaM/xa9KccmtX/8JfaUKoJKaljQIPr4dhxcq34aJZGjnd+/Xo5MqlCnNXsykUF12g3C0LeXo1yNZvImk/6ZO9XpZ+rcvHBE8VzDlDrtH5Yju4is0kDTQj3nD/wnRwYV5eNmr/GzVS88pNfn4J95z8kxkNsTU+0UbJ1Oh94TPpZj1UIjK8mRSavnP4/01EQ5Jien7h1L5EQ6P/UWQkqVl2OjcnKysfLTCS654pgru6ThbmnVJl1Vj/K0luCwsois0kCOTdLyezqLi4c34fq5g3JsUKcnjE9h0MrHPxBdn1Y/8i4tOR7rF74hx9i29CPVo09LlK6I1g+rH4lIri+sfHVNPZpWff4s9q/+Vo6JnJqWkUw1W/WVI6ICdDod+k+Zq7hwizHxd2Kw4YcZcuxULhzaKEcmBYVG2nzVW2NqtOgtRyap2TcU5eNm2epN0KCL+pF3V0/uxpENhXuH/zt/uupr1LodBqN8rRZyrFpk1UZyZNLt6FP48ZW+SLx7Q95ETowFQHJZPn4B6DPxUzk26fq5g9i9Yq4ckw3dvnJKjkyqWLetHNlVhTqt5cikO1dOy5FLSImPxcrPJsqxQRXrtUPdDupHSZqrUfenUEbDicjBtT8UGOEbfycGO/5Qv+Je99H/g5e3rxxTEaDTeWj67GdnZWDlZxPx/Us9EX18u7yZyOkk3buJ5Pg7cmxSpQYd5IiokMiqDdGi/wQ5Nmm3k8/UUdsqBQAq1GkpR3alZZpq7NUzcmRQUT9udh/1vqY+iOu+e7XAVN/jW//AZRVTr5G7IFKPMR/IsSaVG2pb1f3KyV34ckxDbP7lfaQlxcmbyQmxAEgurVbr/qjRQn2vkQ2LZqgeFUTaZGdlIv72VTk2qZwV7mZZolzN5nJk0t3r5+XI6d28eAzfTe+Ke9cvyJsUFQsuicGv2LZ3i06nQy8Nq+/q9Tn4Z+6DaRXrvn0FmekpBR5jSlTdtqjroKk65BzqtH1Ijsx28dBGfPt8Z3z2dG1sWDQDl49tQ3ZWhvwwIoeLjTkrRyb5+AWgtIbR8e7mdvTJ3J519vtyxRE2XZ5+G8FhZeTYqJzsLKz6bKLqUVD2cvea+vM8LeeT1lS+lvoCZEZasqr3XFE+bgaVjETbwc/LsUkJsdexdcmHQG4xdN13r8oPManNw1MREl5OjjUpW6MZgsPKyrFZUpPuY8OiGfjwsQpY8s6jOLTuR8TfiZEfRk6CBUByef0mfaH6zkt6aiL+mcspfvZw99p5oyu0KtHpdIioWEeO7UrL94+7Fa36d3WEpHs3cWrnKiydOQRfPdvS7DvavsWCMfy9VZpPENSoWK8dams4obxyYid2Lv8Cx7f8jmObl8mbjdLpPNBbQ+GR3Eu9TkM0TWfK7+6189j8y/v4bloXvDcwHAumtMM/857D4f9+RmzMWej1evmvENnVHRUjfPKElauuelqnO9q/+jv8MuNhu36pHRnkDHz9g9BrvPreZNfOHsDulfPk2CloKQCW0nA+aU3BYWU0rdp956r5s1qK+nGz3ZAXNBXidvzxGc4fWI8NP7yN+zcuyZuNCioZiXaPvSDHmul0OotXqs7KSMPJ7SuwfPZozB5WGR8Pr4ol7zyKrUtn4eLhTUhPSZD/CjmATu/Mnyayq/g7MZg9rLIcG1WrdX8MnfG7HKuyfPZoHFpn/oii8rVbYuxnWwtk2379COu+e61AZo5hby83u5/NrMejVN0N6z9lLpr1GSPHqqh9bgDgma8OoHTlenLsMCd3rMSStwfLsVHBYWXxwi/qDoTWlpGahJkDQuXYpCkLTyCsXDU5NkrLZ8/HPxBBoepW7MpMT0V6coKmhr3BYWUx9K3fULZGU3mTzdy/cQlfjK6PrMx0eZNNNOo2HINe+E6OHeaL0fVVTSsPKhmJF5dEy7FNaXnv+gUWR4nSFeXYJibO2ytHZln37avYtsx2xWC/wOIoU60xylZvgrLVm6JCnZaaFr9xB3yfW07L+3zN1y+qbpFQr8NgPPqaugb1zu7Q+sVY/tEoOXYLLy6Ntni/8slTNVQVJto/9iK6jXy3QLb4tf44u29NgcwUX/8gTFl43KwFZ2JjzuHzkeqKbFrO1dJTEvDuQ2FybNJzi05pWojDmuZPbKF6arXa65iiftw8suEX/P6hZQU0NQZN/xaNuj8pxxZJjr+DT5+sqek6wRw6nQfCylVDmepNUK5GM5Sr2QxlqjV2WM/3ooojAMkttHnkOU0jtv6eO0X1UuukTtyty3Jkkr0umozx8Q9EseCScmzS/RsX5cgmMlKTcPfaeVVfCbHXNB3Ua7bsg2fm77Nr8Q8ASkRWQksNq31r4eMXgG6jCl60kG2kJcXhxvnDdvnSqv1jLyJQZYFdjbSkOFw8tBHbfv0IS2cOwazHovDpiFr48+OxOLl9hdOvhEmmOfv7/J6GY1UJDatEEvV99nN4+xaTY6PSUxPxt5PN1LmnohCaR6fTobgTnNMWj6ggRybdv6nu/L2oHzcbdBlqt+neZao1RsNuw+XYYgEh4Wj/+ItybDV6fQ7uXD2DIxt+wT/znsPXk9vivYHh+P7FHti6dJbZM5LIMiwAklvw8PRC/ylzodPp5E1Gxd++io0/qF9x1JktnTkEc8Y1tunX8tmj5W9rUHqy+uHexYLVj7yzBS0/R7qDT0CsydvXH8PfW4Vh7/yJYiHq73pbQ8dhryCgeCk5trp2Q6Y71Z1kciy/wOIYMGWe6mOKJe5dv4CDaxdhyTuP4oNHy2HZe8Nwfv86+WFEVpGeov5mUEDxcDkiMqlEZCV0ePwlOTbp5PYVOL37Hzl2GC3TF/0CijvFtHkt53Bq9xE8bgK9x8+2y+/fe4Ltvk/bR6fbrZCJ3H6TFw9vwvqFr+PLMQ3xxej62Lr0QyTH3ZYfSlbCAiC5jQp1WqNR96fk2KRdK+bgxoUjcuyy7l47j1uXjtv0695180cOZKSpW4QBAIoFqz9RsYViIeovdhx9B9KadB6e8PELcGjfFd9iwejy1FtybFUhpcqj7eBpckxFXM1WfdHpidfl2C4y01NwbMtv+OHVvvhyTEMc/u9nh34Oyf1oOVY5y7GZXE/bR6cjvEJNOTbpHyeaqaPpMxOifiaJLQRoOZ9NU//7FvXjZvnaLVG3g7q2R2rVaTcIUXXbyrHVeHh4Yuhbv6lewMda7lw5jfUL38DsJ6pixSfjNC0kScaxAEhupefYD1Tf5XL2FcdcnZYTCEsbCVuL2sVloPEE0VllpCbhu2ld8NHjFfH33KmqCr/W1LT3KERUqivHVtN91Pvw8vGTYyJ0Gv4G2jzyYGVpR7gdfRJ/zHoa8yc2x7Uz++XNRJpoOTb7FguSIyKzeHp5o//kOapHLcXduoKNP74jxw6Rkaq+EKnlPNIWfPzV/xxaz2eL+nGzx5gPVE95N5eXjx96jhUrB9tSUMlIPD1rncOKgMhdUOTAmu/x2cg6WL/wDZdaGdrZsQBIbsU/KBQ9Rv9Pjk2KObMPe1d9JcdkBVru3Hp6+ciRQ2j5ObT8vs4u8d4N7Fk5D1+MrocVn4xDQuw1+SE2pdN5oNe4j+TYKsrXbon6nYbIMdH/6zn2Q/Se8DE8vbzlTXZ148IRLJjaHhsXz7T7qAZyP1pG5zv6M0CurWL99mjQdZgcm7Trzy9x8+JRObY7Led3Ws4jbUHLz6FlH5GnKB83Q8LLofXDtulf2WrgJBSPiJJjmwgrVx1jP9+OMtUay5vsKisjDVuXfoh5E5ppWr2eCmMBkNxO4x5PoWK9dnJs0vrv30TiPfNX+SXzZGo4gfD0Vn+iYgue3upPXLT8vq4iOysTB9Z8jzljG+PkjpXyZpuq0rgLarbsI8cW0el06D3edivWkftoNXASRn+6WdMUNmvKyc7CpsUzsXTmEGRnZcqbicyWmZ4qRyZpKSIQ5ddr7Cz4B6nrr5yTnYWVn06wWwHHkMx09ed3TnM+q+Gza+n5bFE+brZ/7EWzVrBWI7BEBDoMfVmObSokvBzGfr4V7R6d7vBelrejT+HrSW1w8fAmeROpxAIguaV+k+eoPtilpyTgn7mOHbLujrTc/dPnZMuRQ2j5ObQUDV1NatJ9LHl7MNZ995q8yaZ6jJ2l+nNtTL1OQ+za6JhcW7kazfDMVwfQc9ws1a0mrO3k9hX49d3H2bqCNPP08pIjk7QcE4nyKxYShu6j3pNjk2LO7MPevxw7U0fL+WyOk3xmtPwc1iheFtXjpo9fALqOsO7U9S5PzYCvv/3bMHh6+aD76Pcxcf4+VGvWQ95sV+kpCfj5zUGIPr5D3kQqsABIbqlUVC20eWSqHJt0YttynNmzWo7JAt4a+p9kZzpHn4csDT+Hs/QvtIdtv36EDXZcRTusXDW06D9ejjXx9i2mqV0AFW2eXt5o8/BUTFt8Dr0nfIywctXlh9jNqZ2r8N/3b8oxkVm09CbTckwkkjXpNRIV6rSWY5P+c/BMHVc+n83OTJcjk3z8rNPHrqgeNxt1f9Jq02dLV66PJr2elmO7iqhUF0++9xcmzN2Neh0fdVjv7Iy0ZCx5Z4jd2xG5ExYAyW11euJ1lIisJMcm/T1niqapMaTMV0NBLDMjTY4cQsuJm5aLKi2Cw8qgTrtBmr5qte6HivXbI6JSXXh5+8r/tCqbf34P+1d/J8c20+mJ11Es2PJV9doOfh7BYWXlmMgsPn4BaDVwEqYsPI6xn21F60GTNR1vLLXt19m8E06aaClmZDnJsdnRKtZrhxYDJtr1K6xcNfnHcFk6nQ79J89RPaIuLTkeq+c9L8d24+On/nzWWT4zWZoKgOr3EcYUteOmTqdD7wnWaTPTa/xH0Omco2xTplpjPPrqT3hxaTQGTJ2Hqk27270YmBx3G8tnj5FjMpNO7+iGCuQ04u/EYPawynJsVK3W/TF0xu9yrMry2aNxaN2PcmxQ+dotMfazrXKs6Ozef7H49QFybFLbwdPQY0zB0UGzHo9C4l3z7zz2nzIXzfpYtnNS+9zYS1Tdthj9yUY5VvTforew5Rd1I63qdXwUj776kxzb3dzxTVU3nh788o+o3/kxOTbKUZ89AMjOysCN84dxeMMvOLz+J6SnJMgPMcnXPwiTvj2CkPBy8iab2LNyHv6eq36Eb57gsDKYsvCE1U9ure2L0fVx58ppOTYoqGQkXlwSLcc2peW9G1KqvKY+rVo88tIiObKpe9cv4tKRzbh8fDuuntyNu9fOyw+xuohKdfHMVwdUr67pLPg+t5yW9/m3z3dG9PHtcmxUv0lfonm/cXLs0g6tX4zlH42SY6N6T/gYrQZOkmObWvb+Ezi2eZkcG/Xi0mgEhVrWh+yTp2rg/o1LcmxQ+8deRLeR78qxorXfvIztv30ixyYNf3clqjfv9f9/jo05h89H1inwGFOmLDyhuqh64eAGLHr5wfc1hyP2V0pWz3seu1bMkWOjmvYehQFT58ux1bn7cXPpzCE4se1POTZbrdb9MHTGH3LsVLIy0hB9fAcuH92G6BM7ce3MPk2L5qj12BtLUafdIDkmE1gApP+n5QTXGkUItUUuNQVAAFjyzqM4uX2FHBvl6eWN8XN2o3Tlev+fsQD4gJoC4Nals7B+4etybFSVxl0x4gPHT8X+aGgl1UPMh729HDVb9ZVjoxz12ZOlJt7Dys8maDpRqdGiD56Yqf7vaZGTk405YxupKhrk9/ALC9Gw2xNy7HTctTBii/eus0qOv4Po4ztx5cROXDm5CzfOHdI0EsOUIa8vQd32D8uxS+D73DF+fK0fzu1bK8dGdX7yTXR6Qt3x3NmxAGicLQuAGWnJ+HJMA8TduiJvMqpE6YqY9M0RePv6A3YsAMac3ouvJ7eVY6O8vH3x1j+Jcmx3v33wJI5uXCrHRrUeNAW9xn8kxzbnbsfN+zcu4YsxDTSNBvXy9sWkbw4jtEwVeZNTy8nJxs0LRxB9fAeunNiJq6f2IP5OjPwwi5WKqo1J3xyWYzLBOcaSEtlQn4mfqW6amp2ViVWfT3T4imNalKnaCFF129r0q3SV+vK3NUjLKliJd9UV3WxBr89BctwdOTYpKLS0HLkM/6BQPPbGr2j10LPyJpPO7l2t6iLeEh4enug5bpYcm6VsjaZo0HWYHBPZREBIOGq3GYCeYz/E2M+24vWVdzHm083o+vQ7qNSgIzw81S/EoMTRzfHJ9WgpDKm9IUZkjI9fAPpM/EyOTbp/8zI2LZ4pxzYXVLKMHJmUlZmOlPhYOba7xLs35cikwNAIObILdztuloispOm8GgBaDJjocsU/5J6nl6nWGK0GTsKQ15dg+s8XMf3nixj88o9o3GOE1Vrw3I4+ictHzR8URAILgOT2gsPKoPNT6hu+Xj21B/v+XiDHTm/g9G8x+pONNv3q+4z5J2xhZdXdYUXuyZ2ji69xN6ORnaW+B2BJlXeUnVGvCbMRVbeNHBul1+uxe+VcObaZ6s16omL99nJsUrenZ9plygeREk8vH1So0xodHn8ZIz9ah5d+vYq+z3yG8PI15IeqcvnoViTdU3+BR0VXWHn1jfjvXrsgR0QWqdmqr+pZEwCwc/nnuHXpuBzbVHBYWXj7ql8Ywx5TWk25d0P9Z7ekhvN3W3CH42aHoS+rHozi4xeAjsNelWOXFRJeDvU7P4aB0xZg+s8XMeazLWjUbTg8vSxbbfqIypGtxAIgFRGtBk5CZNWGcmzS+u/fQNL9W3JMKoRVUH+AzkxPRYINhoqrcSfmjByZFFC8FPwCQuTY5eh0Huj69DtybJLaqfaW0tJzMKRUBTkicphiwSXRYsBETPr2CAZOWwD/wBLyQ8yi1+txdt8aOSYySMtKnLEajotEpvR99gvVPXmzszKx0s4zdXQ6HUI1LFoRG3NWjuxKnFOrH72rZR9hD6543PQtFgy/oOJybJRvQLBbXFMo0el0qFC7FQa98B2mfn8SNVr0kR9itvMH1skRmcACIBUJOp0H+k+Zq3oFpbSkOKye9zxSk+4jJztb3kxm8A8soWnV1qun98qRXV07s1+OTCpZtqocuayK9dqpPvlLun8L966rv8tMVNTpdB5o3GMExs/ZhRKlK8qbzXL1lGP3meRawjSMnkm8e4PTgMnqQsLLodNw9b0lr57cjf3/fIPUhLvyJpvRcp4Xo+F80pqunzsAvT5Hjo3y8PBEybLOPfWUx033UDyiAp6Y+afm/rJxt65wsI5K6qohRC6sXI1maNpntBybdGzLb3h/UASS427Lm8hMWqbFXj25W47sKub0PjkyScuJoTPTMsU2+sROOSIiM4WWqYxhby/XNCXm9uUTckRkUMkyVeDp5S3HJl0+pm7lYGuKv30Vh//7GamJ9+RN5OJaPzy1wMJ75lr1xbNYMFX9uYpWWgrnMaf2yJFdXdXw/UMiKmg6DjkCj5vuofOTb6Jeh8FybJabF4/KERnBAiAVKd1HvYdAF16kwVWVr9lCjkxy5JDurMx0TU1lK9RuKUcuLaKiulX1ACD+zlU5IiIVIirVRc1W6qfD8LNHanh4eqFsjWZybNLZPavlyG72rJqPP2Y9jY+HV8emxTORnur41VXJOjw8PNF/svqZOvZWvpb687wbF444dBDBuX3qz6fL12wuR06Nx0330PGJ1+TILPG3+Tqq4dx7WSIr8wsIQc+xH8ox2VjVJl3lyKTb0accNp30wsH/kJGWLMcmVW3SXY5cmpap26kJ9+WIiFSq3+lxOTIpxY7T4Mg9aDk2n927BtlZmXJsF2f2/AMASE9JwMbFM/HJkzWw/bePkZWRJj+UXFD52i3RuOcIOXYqlRt2VD3STK/Pweldf8uxXaQlxSH6uPpRu1Uaq983OBqPm66vVFRtTSOBk+PvyBEZwQIgFTkNOj+OKo27yDHZUKUGHeDl4yfHJh1Y870c2cWBf9V/35Jlq6J4hHstMOHtp361u7TkODkicmlHNi7B2m9eRk52lrzJZrRMM8vKSLNrQ3xyfdWaqr9plZp0H8e3/CbHNhcbcxa3o08VyFLiY7H2m1fwyVM1sPevrxxWmCTr6THmfwgoXkqOnYaPfyDK11I/q+XA2kVyZBeH1i/W9LnQsm/Ij8dN15eaeA9/z52K8wfWy5tsSsvq05npvAmkBguAVCT1ffYLTQUp0sbLxw8V6rSWY5MOrFlk9zv78bev4oyGKU6ueLfUFC19ljw8veSIyGVdOPgfln80Ctt/+wRrFrwkb7aZoJLqW1XoPDyh0+nkmMigsjWawj8oVI5N2rn8Czmyue2/fSJH/y/x7g389eVkfD6qLg6tX6x6wQNyHv6BJdBjzP/k2KlUadxZjky6enI3rp87KMc2pdfnYO9fX8uxSaWiaiOoZKQcm43HTdeXk5ONpe8OxZ6V87DsvScQdytafojNaGnV5eHBkpYafLaoSAorVw3tHp0ux2RDtVv3lyOTkuNuY8fvn8qxTf236E1Ndyxrte4nRy4v8d5NOTLJxy9Ajohc0r3rF/Dru8P+f3+w688vcXTjUvlhNpGZlipHJvn6B8kRkVE6nQdqtxkgxyZdP3cQRzf9Ksc2k3TvJo5s+EWOC7l/4xKWfzQKX45ugMR7N+TN5CIadRuOSg06yLHTqNXmITkyy7rvtK1yqtWhdT8iNuasHJtUs5X281keN93D6vnTcPHQRiB31PeSd4YgIzVJfphNZKalyJFJvgEhckRGsABIRVaHoS+73aqtzqxh9+GaDrRbf/3Ibr0ALx/diiMblsixSSXLVnXLEYBaVmJ25qk7ROZKT0nAT28ORGpSwZ6Wy2ePsksvJy2NyX0DguWIyKSWDz0rR2ZZ+81LSImPlWObWD1/mqrZAElxdxAQEi7H5EL6TZ4DL29fOXYKERXroGJ99SsPXzj4H47Zafp8Snws1n//phyb5OHhieZ9x8qxWXjcdA8H/l2IPSvnFciunzuIn94cqGo/rFVC7DU5MsmPBUBVWACkIsvTywf9Jtl/GktR5esfhIbdnpBjkzJSk7Dsf8NtftBJjr+D3z8coWnqUPN+491uCkFGWjIuH1PfOLp4RJQcEbkUvV6P3/73JO5cOS1vQnZWJn59byiOb/1D3mRV5/arX7WxROmKckRkUunK9VCxXjs5Nikh9jp++3AEcnKy5U1WdWTjEtVFk5ot+7AdhYsLL18DbR55To6dRssBE+XILKs+f8bmN7X1+hz8MWskkjTM4qjRsjdCSpWXY5N43HQP0cd34K8vJ8sxAODSkS1Y/MZDSEuyXa/vrIw0XDmxU45NCo2sJEdkBAuAVKRVadwV9To+KsdkIy0fekZToezamf1YOvMxTY2MzZGWHI8fXumD+Dsx8iaTfPwC0LjHU3Ls8vasmo/0lAQ5NimiUl05InIp6797zWgf0KyMNCx7byg2Lp5pk+bhWZnpOLTuRzk2qVTFOnJEZJYWGosZ5/evwx+zntZ048wc0ce3Y9Xnz8ixSU16PS1H5II6DnsVoWUqy7FTqNVmAELCy8mxSWlJcVj0Sm8kxF6XN1mFXq/Hyk8n4Oy+NfIms7Tor21fwOOm64u/fRVL3hmC7KwMedP/u3hoI76e3EbT1HJzHFz7AzLSkuXYpAgNKwcXZSwAUpHXe8LHHDpsJ2HlqqN2W229U87sWY1FL/W0+pSj+zcuYcGUdrhx/rC8ySzN+41zu/fPnatnsHXpLDk2ybdYMEpF1ZZjIpdxZOMSbFs2W44L0ev12LR4Jha+0A13r52XN1tk4w9va2q4XaZqQzkiMkuddgNRunJ9OTbL0Y1Lsfj1AUhLjpc3WeT8gfX48dV+qvtOhVeoiai6beWYXJCXjx/6PvO5HDsFDw9Pzb3E79+4hK8nt8H184fkTRbJTE/F0plDcGDN9/Ims5Sr0QxVGneRY5N43HR9memp+PmtQUiOuy1vKiQ25hzmT2yBncu/sOrNn4TY69jwwww5Nql4RAX4B5aQYzKCBUAq8gJLRKDr0+/IMdlIr/Efa14o4vKxbfhybCPV04GU5ORkY+9fX2Hu+KaKUxbMEVQyEh2feE2OXdqdq2ew+PX+mob4V27YUdMITyJncO3Mfqz8dLwcG3X56FbMHd8E6xe+bpWbE9uWzTbrQkqm03mgevNeckxkFp3OA/0mf6l5/31u31rMGdvIKn2+MlKT8M+850TxT8NIkLaDp8kRubBqzXqgTrtBcuwUmvcfr7lwnhB7Dd9MaY9Ni2ciKzNd3qzahYMbMGdcY5zcvkLeZBadzgN9n1VfbOVx0z38Metp3LhwRI4NykhLxr9fTceCye1wbt9aebNq8Xdi8P2L3ZCScFfeZFK1Zj3liExgAZAot4dbuRrN5JhsICS8HDoMfVmOzZZ0/xaWvTcM8yY0w6F1PyI9NVF+iFEpCXex96+v8PnIuvjry8mq/35+PcfO0rSwiTNKS4rDtl8/wvyJLXD/xiV5s1nqtn9EjohcQtK9m/jl7UeQma5+FcHM9FRsXToLHw+vhr++nITLR7eqvit+4/xhLHq5N9Z9+6q8ySzla7dEYIkIOSYyW4XardCw23A5Nlv8nRj8/NYgLJjSDse3/K66qJEQex0bF8/EZyPrYPeKuao/QwAQWqaypl7D5Nz6PPMpfIs532INlhbOszLTsXHxTHwyvDq2Lv1Q9eIH2VkZOLl9BRa+0A2LXu5lUW/BJr1GomyNpnJsFI+b7mHTT+/ixLblcmyWmDP78ONr/TB/Ygvs/etr1X0nM1KTsGvFHHw5piFiY87Jm81SR+PMsqJMp7fFRHxySfF3YjB7mLpeG7Va98fQGb/LsSrLZ49W1behfO2WGPvZVjm22I3zh/HVs62s1tC6/5S5aNZnjByrova5AYBnvjqA0k7eCyE7KxNzxzfRPPIuP29ff5Sr2QIVardEyXLVULxUefgWC4anty+yMtKQnhyPuNtXcOfKGVw5uQvXzuw32t/CXJUbdsLTsyy/6wWNn72qTbqh/+Q5cmyW7OxMpCXHIyXhLm5dPIaY03txbv96ZKanyA81W2CJCEz76bxdV+37/cMROLLhFzk2asrCEwgrV02OndIXo+ur+owElYzEi0vUT4GxhJb3blBoJMpUayzHdlG3wyNo2HWYHCPu1hV8Obah6umGhgSEhKNCnZaIqFgPpSrVQWDxcPgGhMDXPwiZ6alIT0lA3O0ruHHuEC4e3qTqzruSh57/Gk16umbfM77Prc/Q+9yU5Pg7mDO2MZLu35I3qeZbLBhRddvkHpuro3hEBfj4BcLD0wvpyfFITbqPxHs3ce3sAVw7vQ/Xzx9CTnaW/M+o8vhbv6F2mwFybNSh9Yux/KNRcmxU7wkfo9XASXJsU8vefwLHNi+TY6NeXBqNoNBIOVblk6dqqLop2P6xF9Ft5LtybLFdf36J1fOtN7rTmucCKz4Zp3nabX46nQciqzRAhbqtUapCLZQoXRF+QSXg7VsMOVmZyEhLQvztGNy9fh4xp/Yi+sROTb2aZQEh4Zj83VEUCy4pbzKKx011Zj9RBfG3zV+p2F7Hur/nTMGeVfPlWBOdzgNlqjdGZJWGKF2pLkLLVIFfQAh8A0Lg4emJ9OQEpCbew81Lx3Ht7H6c3bvGovdPidIVMXXRKXh4eMqbyAgWAOn/aTnBdacCIACsnvc8dq3QVlSRsQBo3J2rZ7Bgclur9w2yh+CwspgwZxcCQ0vLmzTR8tlzNl2ffgcdHtc+slMLFgALstfJYn6u9t41dnG67+8FWPXFs3Ls9IpHVMBzi0677KqnfJ9bn7H3uSlXTuzE9y/2UD2Cz9GqN++F4e+ulGOTWAA0zlkKgHp9Dr56ppXV+uZZ81wgMz0V3zzXQXMvaUfy9PLGk+//jcoNO8mbzMLjpvmctQCYkZqEuROaWTSC1FGsca1dFHEKMFE+XZ5+G8FhZeSYbCC8fA0MfnWxy9218fb1x9AZv1ut+OcOQstURptHnpNjIpfSrO9Yl1zRu+PQV+16EUPurUKd1ug76Qs5dmoBxUth4LQFckxuRKfzQP+p85zynNHb1x/D3l7uktNJe42frbn4Bx433YKPfyCGvf2Hy7U0Ci1TGY17jJBjMgMLgET5+PoHodf4j+WYbKR6s57oMfYDOXZaOp0HHnrua5St3kTeVGR5eHrhoee+suvUXyJb6T9lnks1Ba/atDua9Bopx0QWadLzaZdZTMPTyxuDX/7BJYsvpE7Z6k3Q1ElH+4SEl8Pjby2Dt28xeZPTatZnDFr0nyDHqvG46fpKRdXOff/6y5uckoeHJx5+YSE8vbzlTWQGFgCJJHXbP4zqXFHIbloPmoJ+k750yru6+Xl5+2LwKz+ifufH5E1FWvdR76FSg45yTOSSPL28MXTGb6jZqq+8yekEhpbGoOnfyDGRVfQY8z90HfG2HDsVnU6H/lPmoUrjLvImclPdRs60eFqzrVSo3QpPf7hGdS89R2g9aDL6aewjLeNx0z1UadwFw97+Az7+gfImp9Nh6CuoUKe1HJOZWAAkUtD32c9d6i6eq2vebxyGvLHUae88+QWEYPh7q1Cv46PypiKt0xOvc+ovuR1PLx8MnfE72jw8Vd7kNIqFhGHEB/867YUwuYcOQ1/BwGkLnHKqnE7ngQFT57vk9EPSzi8gBD3HzZJjp1G+dkuM/nQzikdEyZucgk6nQ48xH6DX+NmaVy9WwuOme6jSuCvGfLoFxSMqyJucRvN+49D5yTflmFRgAZBIQYnISujw+EtyTDZUu80AjJq9AaWiasmbHKps9SYY89kWi3qkuBsvb1/0nzKXB2ByWzqdB3qOm4WhM35HQEi4vNmhgsPKYsQH/yKiYh15E5HVNe4xAiM/WoeSZavKmxzGt1gwHn/rN07jK6LqdxqCKo27yrHTCC9fA+O+2I6aLfvImxwqKDQSj7/1G9oOfl7eZBU8brqH0pXrYeL8fajb4RF5k8O1GDARfZ91rR61zogFQCID2j46HeEVasox2VDZGk0xcf5+dB7+hsN7yvn4BaDHmA8w7ssdKBVVW95cZJWp1hhjPt/KVbeoSKjVuj8mfXsYTXuPcopRUNWa9cAzX+1HZJUG8iYim4mq2xbPfn0QbQdPc/jnoHztlhg/Zxdqte4nb6IipP/kL5121ggABJaIwLB3/sSQ135x+KJxOp0OjXuMwORvj6BW6/7yZqvjcdP1+QeWwJDXfsHjb/3mFDd/fPwDMfiVxej7zGdWHblaVLEASGSAp5c3+k+Zyx2NnXl6eaPT8Dcw8av9aND5cXh6+cgPsSkvHz807jECk745jLaDn4dOx90kAIRXqIlBL3yH8XN2okzVRvJmIrcVEBKOAVPn45mvDqB+58cc0nQ6OKwsBk77BsPfXeUS/aXI/Xj5+KHHmP9hwtzdqNvhEbtf2AeGlka/SV9gzKdbEFaumryZipjQMlXQ7tHpcux06nZ4BJO/PYL2j70I/6BQebNN6XQ6VGncFaM+3oCB0xbAL7C4/BCb4XHTPdRuMwCTvz2KfpO+dEghUKfToV6HwZi04DDqdxoibyaNeGVLZETFeu3QoOswOSY7CC9fA4+8/AOmLT6Hdo9Ot/mJU0DxUug47DVM/+k8Bk5b4LT9W+wpqGQkmvR8GiM/WodJ3xxBo27DWRClIqtUVC0MfvlHPP/jOXR64nW7nAyXLFsVPcb8D88tOoXGPZ7iDSlyuNKV62PIa7/guUWn0KL/BPgWC5YfYlVh5aqh1/iP8PwPZ9C833h+Buj/tX/8JZcoBvsHlkC3ke9i+s8X0GfipzY/dnj7+qNR9yfxzNcHMeKD1Yiq21Z+iN3wuOn6PDy90LzfOExZeALD3l6OWq37w8vHT36YVXl6+aBOu4EY98UOPPraz07dk9AV8UqOyIReY2fxzpEDBZWMRPfR7+PlZTF4etZatB40xWonfKWiaqHt4GkY/clGvPTrFXR56i0EFC8lP8wt6XQ6eHn7wtc/CMFhZVGmaiPUaNEbbR55DgOnfYPJ3x3Di0ui8dDzX6NSg448gSLKFRxWBp2ffBNTvz+J8V/uRKfhbyCqbhurjXAILVMFTXqNxNOz1mLq9yfRdvA0m59sE6lVPCIKfZ/9HK/8fgNPvf83mvcbb5WLNJ1Oh/DyNdB60BSM+XQzpiw8gdaDpjj1dE9yDE8vH/Sb9KUcOy0fvwC0fOgZTP3+JJ756gC6jngb5Wu3hIeHp/xQ1YJKRqJxjxF4/K3f8PJv1zFo+rdO1e+Ox03Xp9PpULNVXwyd8TteWnoFD7/4PRp2HYbgsDLyQzXx8QtA5Uad0XPcLLy45DIee+NXlK3RVH4YWYFOr9fr5ZCIyNklx93GzYvHcDv6JG5Hn8T9m9HISE1EekoiMtKSkJmeBm9ff/j6B8KnWBB8/YNQIrISIqJqo1TF2oioWBfFQsLkf5aISJOszHTcvnwCNy8eQ+zVM4iPjUHi3ZtIjruNrMw0ZGWkITszE57e3vD2LQZv32LwDyqBEqUrIjSyMkqWrYYKdVpb7WSayBES797AzYtHcevyCdyOPomE2OtIT0lAekoCMlKTkJmRBk8vb3j5+MEvIAQBxUshuGQZhJWvjlJRtVC+VkvedKUiJT01Ebcvn8Tt3M/M3WvnkZoUJ85pU5OQkZoMTy9v+PoHwrdYMHyKBSE4rAxKVaiVez5bzyrFd0fgcdM9JMRex40Lh3H78gncv3kZiXevI/H+LaQnxyMrMx1ZGenQ6/Xw9vWHj18xePsFILhkJELLVEVoZGWUrlwPZWs0s1pBmIxjAZCIiIiIiIiIiMiNcQowERERERERERGRG2MBkIiIiIiIiIiIyI2xAEhEREREREREROTGWAAkIiIiIiIiIiJyYywAEhERERERERERuTEWAImIiIiIiIiIiNwYC4BERERERERERERujAVAIiIiIiIiIiIiN8YCIBERERERERERkRtjAZCIiIiIiIiIiMiNsQBIRERERERERETkxlgAJCIiIiIiIiIicmMsABIREREREREREbkxFgCJiIiIiIiIiIjcGAuAREREREREREREbowFQCIiIiIiIiIiIjfGAiAREREREREREZEbYwGQiIiIiIiIiIjIjbEASERERERERERE5MZYACQiIiIiIiIiInJjLAASERERERERERG5MRYAiYiIiIiIiIiI3BgLgERERERERERERG6MBUAiIiIiIiIiIiI3xgIgERERERERERGRG2MBkIiIiIiIiIiIyI2xAEhEREREREREROTGWAAkIiIiIiIiIiJyYywAEhERERERERERuTEWAImIiIiIiIiIiNwYC4BERERERERERERujAVAIiIiIiIiIiIiN8YCIBERERERERERkRtjAZCIiIiIiIiIiMiNsQBIRERERERERETkxlgAJCIiIiIiIiIicmMsABIREREREREREbkxFgCJiIiIiIiIiIjcGAuAREREREREREREbkyn1+v1ckhERERERFZ04zRwehPQaYK8xf3djQYuHwDibwBpiYCHJ+AXDIRVBCo0AoJLyX8D2Pur2F65hbzF9RTl156UZaQC108AN84AKfeB9CTA0wfwDwIiqgFRTQC/IPlvATt/BCo2BcrUlrcQEZnEAiAROc5ilSfC3Z4DSlcHzm0Hdv8sbzWt6WCgVueC2V8zgbjrBTMl/d4QFywrZ8hbrK/dKHFyp9X+34FTG+TUNA9PwMsX8A8BQkoDkTWB8g3En8219Vsg+oCcWldIJND/TTkFDq0Ajq+VU/N4eALD5sipeRJuaX9fhFUCer0InN0K7Fkib7W+Rz8CfAMLZkf/AY78XTAzpWF/oF4vOS3o0j5g+0I5LazN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UWqW9NIjsqU9S8RCV8aK0+bKSBGj+26eES1J0pJEoc4nQIxYjKgmWjaY02qFiEgFFgCJiIiIiIiIiIjcmIWNMIiIiIiIiIiIiMiZsQBIRERERERERETkxlgAJCIiIiIiIiIicmMsABIREREREREREbkxFgCJiIiIiIiIiIjcGAuAREREREREREREbowFQCIiIiIiIiIiIjfGAiAREREREREREZEbYwGQiIiIiIiIiIjIjbEASERERERERERE5MZYACQiIiIiIiIiInJjLAASERERERERERG5MRYAiYiIiIiIiIiI3BgLgERERERERERERG6MBUAiIiIiIiIiIiI3xgIgERERERERERGRG2MBkIiIiIiIiIiIyI2xAEhEREREREREROTGWAAkIiIiIiIiIiJyYywAEhERERERERERuTEWAImIiIiIiIiIiNwYC4BERERERERERERujAVAIiIiIiIiIiIiN8YCIBERERERERERkRtjAZCIiIiIiIiIiMiNsQBIRERERERERETkxlgAJCIiIiIiIiIicmMsABIREREREREREbkxFgCJiIiIiIiIiIjcGAuAREREREREREREbowFQCIiIiIiIiIiIjfGAiAREREREREREZEbYwGQiIiIiIiIiIjIjbEASERERERERERE5MZYACQiIiIiIiIiInJj/wdrT34m0JOCjAAAAABJRU5ErkJggg==";
+const icon = (name) => {
+  const paths = {
+    "file-text": '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+    "message-circle": '<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/>',
+    "camera": '<path d="M14 4h-4L8 7H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/>',
+    "clipboard-list": '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5M9 10h6M9 14h6M9 18h3"/>',
+    "chart-column": '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    "globe": '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+    "utensils": '<path d="M3 2v7a4 4 0 0 0 4 4v9M7 2v5M11 2v5M11 2v7a4 4 0 0 1-4 4M17 14v8M17 14a4 4 0 0 1-4-4V6a4 4 0 0 1 8 0v4a4 4 0 0 1-4 4z"/>',
+    "chart-line": '<path d="M3 3v18h18M7 14l4-4 4 3 6-7"/>',
+    "zap": '<path d="m13 2-3 8h7l-6 12 1-9H5l8-11z"/>',
+    "activity": '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+    "user-round": '<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>',
+    "calendar": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+    "map-pin": '<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
+    "search": '<circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/>',
+    "sparkles": '<path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/>',
+    "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    "credit-card": '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+    "settings": '<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.6-1.4-2.4L7.3 15a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1-.1 2Z"/>',
+    "check-circle": '<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/>',
+    "list-checks": '<path d="m3 6 2 2 4-4M12 7h9M3 13l2 2 4-4M12 14h9M3 20h6M12 21h9"/>',
+    "shield-check": '<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/>',
+    "phone": '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 2.8a2 2 0 0 1-.6 1.7L7.7 9.5a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 1.7-.6l2.8.5a2 2 0 0 1 1.5 1.8Z"/>',
+    "mail": '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+    "notebook-pen": '<path d="M12 7H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7"/><path d="M8 3H5a2 2 0 0 0-2 2v2M8 7h5M8 12h5M8 17h3"/><path d="m16 5 3-3 3 3-8 8-4 1 1-4Z"/>',
+    "workflow": '<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M6 9v3a3 3 0 0 0 3 3h6M18 15v-3a3 3 0 0 0-3-3H9"/>',
+    "triangle-alert": '<path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+    "chart-no-axes-combined": '<path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 6-8"/><path d="M17 5h4v4"/>',
+    "smartphone": '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/>',
+    "user-round-check": '<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 11l2 2 4-4"/>',
+    "calendar-check": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18m4 6 2 2 4-4"/>',
+    "layout-dashboard": '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="5" rx="1"/><rect x="13" y="10" width="8" height="11" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>',
+    "book-open": '<path d="M12 7v14M3 18V5a2 2 0 0 1 2-2h3a4 4 0 0 1 4 4 4 4 0 0 1 4-4h3a2 2 0 0 1 2 2v13h-5a4 4 0 0 0-4 3 4 4 0 0 0-4-3Z"/>',
+    "chef-hat": '<path d="M6 13a4 4 0 1 1 2-7.5A5 5 0 0 1 18 7a3.5 3.5 0 0 1 0 7H6Z"/><path d="M6 13v7h12v-7M6 17h12"/>',
+    "message-square-text": '<path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8M8 13h6"/>',
+    "sliders-horizontal": '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4"/>',
+    "stethoscope": '<path d="M6 3v5a4 4 0 0 0 8 0V3M4 3h4M12 3h4M10 12v2a6 6 0 0 0 12 0v-1"/><circle cx="22" cy="11" r="2"/>'
+  };
+  return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.activity}</svg>`;
+};
+
+const slides = [
+{
+id:"cover",num:"01",cls:"cover",
+html:`<div class="slide-inner cover-grid">
+ <div><div class="eyebrow">Infobytes Technosys · Product Proposal</div><h1>Diet <span>App</span></h1>
+  <p class="lead" style="margin-top:27px">One place for a dietitian to guide clients through their plans, everyday meals, questions and progress — including clients living abroad.</p>
+  <div class="pill">A proposal for your nutrition practice</div>
+ </div>
+ <div class="mockup"><div class="phone">
+  <div class="phone-top"><div><div class="phone-title">Today's plan</div><div class="mini">Meals in your local time</div></div><div class="avatar"></div></div>
+  <div class="dashboard-card d1"><b>Lunch</b><span>See portions, recipe and preparation guide</span></div>
+  <div class="dashboard-card d2"><b>Travel option</b><span>An alternative selected by your dietitian</span></div>
+  <div class="dashboard-card d3"><b>Check in</b><span>Share a note or photo after your meal</span></div>
+  <div class="food-row"><div class="food a"><b>Breakfast</b><span>Logged ✓</span></div><div class="food b"><b>Dinner</b><span>Upcoming</span></div></div>
+ </div><div class="float fl1">Diet plan</div><div class="float fl2">Recipe guide</div><div class="float fl3">Progress</div><div class="float fl4">Ask dietitian</div></div>
+</div>`
+},
+{
+id:"problem",num:"02",cls:"problem",
+html:`<div class="slide-inner problem-grid">
+ <div><div class="eyebrow">01 · The working day</div><h2>One client.<br><span style="color:var(--orange)">Many moving parts.</span></h2>
+  <p class="lead" style="margin-top:22px">A plan is only the start. The dietitian also handles questions, meal updates, changes to routine and progress reviews across many clients.</p>
+  <div class="problem-statement">For a client abroad, meals and check-in times must fit what is available where they live.</div>
+  <p class="caption">These touchpoints illustrate the workflow to validate with your practice.</p>
+ </div>
+ <div class="network"><div class="center-client">CLIENT<br>CARE</div>
+  <div class="actor a1">${icon("file-text")}<span>Meal plan</span></div><div class="actor a2">${icon("message-circle")}<span>Questions</span></div><div class="actor a3">${icon("camera")}<span>Meal check-ins</span></div>
+  <div class="actor a4">${icon("clipboard-list")}<span>Plan changes</span></div><div class="actor a5">${icon("chart-column")}<span>Progress</span></div><div class="actor a6">${icon("globe")}<span>Local foods</span></div>
+  <svg class="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+   <line x1="50" y1="50" x2="13" y2="21"/><line x1="50" y1="50" x2="49" y2="12"/><line x1="50" y1="50" x2="86" y2="31"/>
+   <line x1="50" y1="50" x2="17" y2="79"/><line x1="50" y1="50" x2="50" y2="88"/><line x1="50" y1="50" x2="86" y2="79"/>
+  </svg>
+ </div>
+</div>`
+},
+{
+id:"pain",num:"03",cls:"pain",
+html:`<div class="slide-inner pain-layout">
+ <div class="pain-visual"><div class="pain-orbit"></div><div class="big-icon">${icon("activity")}</div>
+  <div class="pain-bubble pb1"><span>${icon("file-text")}</span>Old plan</div><div class="pain-bubble pb2"><span>${icon("utensils")}</span>Meal changed</div>
+  <div class="pain-bubble pb3"><span>${icon("camera")}</span>Check-in</div><div class="pain-bubble pb4"><span>${icon("chart-line")}</span>Progress</div><div class="pain-bubble pb5"><span>${icon("globe")}</span>Local foods</div>
+ </div>
+ <div><div class="eyebrow">02 · Moments that need attention</div><h2>The plan meets<br><span style="color:var(--orange)">real life.</span></h2>
+  <div class="pain-list" style="margin-top:27px">
+   <div class="pain-row"><div class="icon">${icon("file-text")}</div><div><b>Before assigning</b><p>Has this client received this plan before?</p></div><div class="impact">HISTORY</div></div>
+   <div class="pain-row"><div class="icon">${icon("utensils")}</div><div><b>When a meal is unavailable</b><p>Which approved option can the client use today?</p></div><div class="impact">CHANGE</div></div>
+   <div class="pain-row"><div class="icon">${icon("camera")}</div><div><b>After the meal</b><p>Where is the client's check-in, photo or question?</p></div><div class="impact">REVIEW</div></div>
+   <div class="pain-row"><div class="icon">${icon("globe")}</div><div><b>For a client abroad</b><p>Do the foods, portions and timings fit their location?</p></div><div class="impact">CONTEXT</div></div>
+   <div class="pain-row"><div class="icon">${icon("chart-line")}</div><div><b>At the next consultation</b><p>What changed in weight, habits and the plan?</p></div><div class="impact">PROGRESS</div></div>
+  </div>
+ </div>
+</div>`
+},
+{
+id:"scenario",num:"04",cls:"scenario",
+html:`<div class="slide-inner"><div class="eyebrow">03 · A situation worth designing for</div>
+ <h2>A client abroad cannot get the planned lunch.</h2>
+ <p class="lead" style="margin-top:18px">The plan still needs to be useful when the client's location, schedule or available food changes.</p>
+ <div class="scenario-grid">
+  <div class="scenario-card"><div class="card-icon">${icon("file-text")}</div><div class="n">01 · BEFORE LUNCH</div><h3>Relevant plan</h3><p>The dietitian selects meals that fit the client's goals, preferences and locally available foods.</p></div>
+  <div class="scenario-card"><div class="card-icon">${icon("utensils")}</div><div class="n">02 · DURING THE DAY</div><h3>Change of plan</h3><p>The planned meal is unavailable. The client needs an approved alternative or a way to ask for help.</p></div>
+  <div class="scenario-card"><div class="card-icon">${icon("check-circle")}</div><div class="n">03 · AFTER THE MEAL</div><h3>Visible follow-up</h3><p>The client records what happened. The dietitian can review it and adjust the next plan.</p></div>
+ </div>
+ <div class="scenario-note">The next two slides follow these same steps: first through a manual process, then through Diet App.</div>
+</div>`
+},
+{
+id:"traditional",num:"05",cls:"workflow",
+html:`<div class="slide-inner"><div class="eyebrow">04 · Current workflow · illustrative</div><h2>Today, every change needs a handoff.</h2>
+ <p class="lead" style="margin-top:12px">The exact tools may vary. These are the actions the dietitian and client must coordinate.</p>
+ <div class="journey">
+  <div class="journey-head"><span>STEP</span><span>DIETITIAN</span><span>CLIENT</span></div>
+  <div class="journey-row"><div class="journey-step"><b>1</b> Intake</div><p>Collects goals, food preferences and location.</p><p>Shares routine, restrictions and available foods.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>2</b> Assign plan</div><p>Checks previous files and sends a revised plan.</p><p>Receives the plan separately from later guidance.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>3</b> Explain meals</div><p>Sends portions, recipes or preparation guidance.</p><p>Looks through messages for the right instructions.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>4</b> Handle change</div><p>Responds when a meal or ingredient is unavailable.</p><p>Contacts the dietitian and waits for a replacement.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>5</b> Check in</div><p>Finds meal photos, notes and questions to review.</p><p>Sends updates through the available channel.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>6</b> Review</div><p>Brings weight, updates and plan changes together.</p><p>Waits for feedback and the next plan.</p></div>
+ </div>
+ <div class="workflow-takeaway">The work can be done, but the context must be carried from one step to the next.</div>
+</div>`
+},
+{
+id:"proposed",num:"06",cls:"workflow with-app",
+html:`<div class="slide-inner"><div class="eyebrow">05 · With Diet App · Basic workflow</div><h2>The same day, in one client record.</h2>
+ <p class="lead" style="margin-top:12px">Basic supports the full care loop through dietitian-led decisions. Pro can add food and AI assistance.</p>
+ <div class="journey">
+  <div class="journey-head"><span>STEP</span><span>DIETITIAN</span><span>CLIENT</span></div>
+  <div class="journey-row"><div class="journey-step"><b>1</b> Intake</div><p>Records goals, cuisine, location and local time.</p><p>Shares preferences, restrictions and available foods.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>2</b> Assign plan</div><p>Sees a prior-assignment alert; adds home and travel options.</p><p>Opens today's meals, portions and timings.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>3</b> Explain meals</div><p>Attaches a recipe, steps and optional video or link.</p><p>Opens guidance beside the planned meal.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>4</b> Handle change</div><p>Reviews a request and sends a suitable replacement.</p><p>Uses an approved option or asks for help.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>5</b> Check in</div><p>Reviews meal status, optional photo, note or question.</p><p>Logs what happened in the same place as the plan.</p></div>
+  <div class="journey-row"><div class="journey-step"><b>6</b> Review</div><p>Sees weight trends, optional photos and plan history.</p><p>Sees progress and the revised plan.</p></div>
+ </div>
+ <div class="workflow-takeaway">Every update stays with the client's plan and history. Pro can suggest candidate food alternatives for the dietitian to review.</div>
+</div>`
+},
+{
+id:"demo",num:"07",cls:"demo",
+html:`<div class="slide-inner"><div class="eyebrow">06 · Clickable product preview</div><h2>Follow one client through a day.</h2>
+ <p class="lead" style="margin-top:12px">Select a step to see how a dietitian and a client abroad would use the proposed product.</p>
+ <div class="demo-shell">
+  <div class="demo-heading"><span>Illustrative preview · fictional client</span><span>Dietitian workspace and client view</span></div>
+  <div class="demo-steps" aria-label="Sample client journey">
+   <button class="demo-step active" type="button" data-demo-step="0">1 · Client record</button>
+   <button class="demo-step" type="button" data-demo-step="1">2 · Plan history</button>
+   <button class="demo-step" type="button" data-demo-step="2">3 · Today's meal</button>
+   <button class="demo-step" type="button" data-demo-step="3">4 · Follow-up</button>
+  </div>
+  <div class="demo-stage" id="demo-stage" aria-live="polite"></div>
+ </div>
+ <p class="caption">This is a sample workflow for discussion. Buttons show proposed screens; they do not save real client data.</p>
+</div>`
+},
+{
+id:"plans",num:"08",cls:"plans",
+html:`<div class="slide-inner"><div class="eyebrow">07 · Package choice · product scope</div><h2>Choose the package for your practice.</h2>
+ <p class="lead" style="margin-top:10px">Basic, Pro and Premium define which capabilities the dietitian buys. Delivery phases are agreed separately. Each package includes the capabilities before it.</p>
+ <div class="plan-grid">
+  <a class="plan" href="#basic"><div class="plan-icon">${icon("clipboard-list")}</div><div class="label">01 · DAILY CARE</div><h3>Basic</h3><p>Plans, instructions, alternatives, check-ins and progress.</p><div class="price">₹ XX,XXX <small>DEMO PRICE</small></div><span class="plan-open">See Basic →</span></a>
+  <a class="plan pro" href="#pro"><div class="plan-icon">${icon("zap")}</div><div class="label">02 · FOOD ASSISTANCE</div><h3>Pro</h3><p>Everything in Basic, plus food data and AI-supported suggestions.</p><div class="price">₹ XX,XXX <small>DEMO PRICE</small></div><span class="plan-open">See Pro →</span></a>
+  <a class="plan" href="#premium"><div class="plan-icon">${icon("settings")}</div><div class="label">03 · ADVANCED PERSONALISATION</div><h3>Premium</h3><p>Everything in Pro, plus configurable routines, deeper progress, follow-up and practice tools.</p><div class="price">₹ XX,XXX <small>DEMO PRICE</small></div><span class="plan-open">See Premium →</span></a>
+ </div>
+ <div class="package-scroll"><table class="package-matrix"><thead><tr><th>Included capability</th><th>Basic</th><th>Pro</th><th>Premium</th></tr></thead><tbody>
+  <tr><td>International profiles, plans and previous-assignment alert</td><td class="included">✓</td><td class="included">✓</td><td class="included">✓</td></tr>
+  <tr><td>Meal instructions, recipes and optional videos or links</td><td class="included">✓</td><td class="included">✓</td><td class="included">✓</td></tr>
+  <tr><td>Home/travel options, change requests and meal check-ins</td><td class="included">✓</td><td class="included">✓</td><td class="included">✓</td></tr>
+  <tr><td>Chat, essential alerts, progress and basic reports</td><td class="included">✓</td><td class="included">✓</td><td class="included">✓</td></tr>
+  <tr><td>Food nutrition details, assisted lookup and AI suggestions</td><td class="empty">—</td><td class="included">✓</td><td class="included">✓</td></tr>
+  <tr><td>Configurable streaks, fasting and flexible/cheat-day options</td><td class="empty">—</td><td class="empty">—</td><td class="included">✓</td></tr>
+  <tr><td>Follow-up queue, scheduled reminders and deeper progress journey</td><td class="empty">—</td><td class="empty">—</td><td class="included">✓</td></tr>
+  <tr><td>Dietitian's client programmes, subscriptions and payments</td><td class="empty">—</td><td class="empty">—</td><td class="included">✓</td></tr>
+ </tbody></table></div>
+ <p class="caption">Prices are placeholders. Final scope, integrations, delivery time and commercial terms will be confirmed with you.</p>
+</div>`
+},
+{
+id:"basic",num:"09",cls:"package",
+html:`<div class="slide-inner"><div class="eyebrow">08 · Basic package</div><h2>Run the complete daily care workflow.</h2>
+ <p class="lead" style="margin-top:12px">A practical system for the dietitian and client, including international food context and human-led changes.</p>
+ <div class="package-detail-grid">
+  <div class="detail-card"><h3>${icon("user-round")} The dietitian can</h3><ul>
+   <li>Record goals, food restrictions, country, cuisine and local time for each client.</li>
+   <li>Create, assign and revise plans; see when the same plan was previously assigned.</li>
+   <li>Add portions, recipes, preparation steps, optional videos or links, and approved home/travel options.</li>
+   <li>Review check-ins and change requests, reply in chat, and prepare a progress summary.</li>
+  </ul></div>
+  <div class="detail-card"><h3>${icon("check-circle")} The client can</h3><ul>
+   <li>Follow today's meals and timings in their own local time; receive essential plan and message alerts.</li>
+   <li>Open recipe instructions and optional preparation videos beside a meal.</li>
+   <li>Choose a dietitian-approved option or ask for help when today's meal is not possible.</li>
+   <li>Check in with a status, optional photo or note; view weight trend and agreed progress measures.</li>
+  </ul></div>
+ </div>
+ <div class="detail-example"><b>Example:</b> A client abroad cannot find a planned ingredient. They use the approved local option, or request a replacement; the dietitian sees the change with that day's check-in.</div>
+</div>`
+},
+{
+id:"pro",num:"10",cls:"package propkg",
+html:`<div class="slide-inner"><div class="eyebrow">09 · Pro package · includes Basic</div><h2>Find food options faster.</h2>
+ <p class="lead" style="margin-top:12px">Food data and AI assist everyday choices; the dietitian sets the plan and reviews suggested changes.</p>
+ <div class="pro-tiles">
+   <div class="feature-tile"><div class="tile-icon">${icon("utensils")}</div><div class="tile-number">01</div><h3>Food reference</h3><p>Search foods and view nutrition details for foods and packaged items across the countries served by the practice. Add practice-specific foods when needed.</p></div>
+  <div class="feature-tile"><div class="tile-icon">${icon("search")}</div><div class="tile-number">02</div><h3>Assisted lookup</h3><p>Use search, barcode or a food image to help identify an item for a meal log. The available coverage and accuracy will be checked during scope validation.</p></div>
+  <div class="feature-tile"><div class="tile-icon">${icon("check-circle")}</div><div class="tile-number">03</div><h3>Candidate alternatives</h3><p>Suggest meal or recipe options using foods the client reports having access to and the dietitian's instructions. The dietitian can review a replacement before it changes the plan.</p></div>
+ </div>
+ <div class="detail-example"><b>Example:</b> A client travelling abroad cannot find a planned meal. Pro surfaces candidate local options; the dietitian selects an appropriate replacement, and the client sees it alongside the day's plan.</div>
+</div>`
+},
+{
+id:"premium",num:"11",cls:"package prempkg",
+html:`<div class="slide-inner"><div class="eyebrow">10 · Premium package · includes Pro</div><h2>Personalise care and follow up.</h2>
+ <p class="lead" style="margin-top:12px">The dietitian can tailor routines for each client, follow their journey and manage paid care programmes.</p>
+ <div class="premium-tiles">
+   <div class="feature-tile"><div class="tile-icon">${icon("calendar")}</div><div class="tile-number">01</div><h3>Personalised routines</h3><p>Set fasting schedules and flexible or cheat-day options per client when they suit the dietitian's plan.</p></div>
+   <div class="feature-tile"><div class="tile-icon">${icon("clock")}</div><div class="tile-number">02</div><h3>Engagement</h3><p>Configure streaks and check-in or review reminders for each client's local time. The dietitian controls the rules.</p></div>
+   <div class="feature-tile"><div class="tile-icon">${icon("chart-line")}</div><div class="tile-number">03</div><h3>Journey & follow-up</h3><p>See pending cases and compare weight, optional photos, check-ins and plan revisions across the client's journey.</p></div>
+   <div class="feature-tile"><div class="tile-icon">${icon("credit-card")}</div><div class="tile-number">04</div><h3>Programmes & billing</h3><p>Define client care programmes, track subscriptions and renewals, and collect payments through an agreed integration.</p></div>
+ </div>
+ <div class="detail-example"><b>Example:</b> The dietitian enables a flexible meal day for one client, sets a suitable check-in reminder and reviews that day's meal log alongside the weight trend before updating the plan.</div>
+</div>`
+},
+{
+id:"roadmap",num:"12",cls:"roadmap",
+html:`<div class="slide-inner"><div class="eyebrow">11 · Delivery phases · configurable</div><h2>Agree the order after choosing a package.</h2>
+ <p class="lead" style="margin-top:12px">The package defines the included features. Phases organise development; their feature mix and timing are agreed with the dietitian. These are example milestones.</p>
+ <div class="roadmap-grid">
+   <div class="phase"><div class="n">PHASE 01 · EXAMPLE</div><div class="phase-icon">${icon("user-round")}</div><h3>Set up care</h3><p>Establish the client record and the plan workflow.</p><div class="tags"><span>Access & profiles</span><span>International context</span><span>Plan setup</span></div></div>
+   <div class="phase"><div class="n">PHASE 02 · EXAMPLE</div><div class="phase-icon">${icon("list-checks")}</div><h3>Connect daily work</h3><p>Bring the plan, daily log and conversations together.</p><div class="tags"><span>Today & food journal</span><span>Chat & progress</span><span>Selected food tools</span></div></div>
+   <div class="phase"><div class="n">PHASE 03 · EXAMPLE</div><div class="phase-icon">${icon("zap")}</div><h3>Add chosen tools</h3><p>Deliver the assistance and routines selected for the package.</p><div class="tags"><span>AI or scanning</span><span>Engagement tools</span><span>Advanced journey</span></div></div>
+   <div class="phase"><div class="n">PHASE 04 · EXAMPLE</div><div class="phase-icon">${icon("check-circle")}</div><h3>Finish and extend</h3><p>Complete selected features, integrations, testing and handoff.</p><div class="tags"><span>Reports & payments</span><span>Remaining selected tools</span><span>Release</span></div></div>
+ </div>
+ <div class="roadmap-opportunity"><b>Possible later expansion:</b> A dietitian-approved shopping list can lead to product pages and an optional marketplace. Orders and coupons would be scoped separately.</div>
+ <p class="caption">No phase equals a package. Included Pro or Premium features may be delivered in Phase 2, 3 or 4 as agreed.</p>
+</div>`
+},
+{
+id:"decision",num:"13",cls:"decision",
+html:`<div class="slide-inner"><div class="eyebrow">12 · Decisions before development</div><h2>Confirm the working day, then commit the build.</h2>
+ <p class="lead" style="margin-top:16px">The proposal shows how the experience could work. The next discussion establishes exactly what your practice needs.</p>
+ <div class="decision-grid">
+  <div class="decision-card"><div class="card-icon">${icon("list-checks")}</div><div class="n">01 · VALIDATE</div><h3>Daily workflow</h3><p>How do clients check in today? Which meal changes need your approval, and what should progress reviews contain?</p></div>
+  <div class="decision-card"><div class="card-icon">${icon("shield-check")}</div><div class="n">02 · SELECT</div><h3>Package & coverage</h3><p>Choose Basic, Pro or Premium and confirm the foods, countries and care programmes that matter to your clients.</p></div>
+   <div class="decision-card"><div class="card-icon">${icon("calendar")}</div><div class="n">03 · AGREE</div><h3>Scope & phases</h3><p>Assign the selected features to delivery phases, confirm integrations and timeline, and scope any marketplace expansion separately.</p></div>
+ </div>
+ <div class="decision-closer">Infobytes Technosys · A focused product proposal for your nutrition practice.</div>
+</div>`
+},
+{
+id:"current-user-flow",num:"14",cls:"userflow",
+html:`<div class="slide-inner"><div class="eyebrow">13 · User flow · current experience</div><h2>Today, the journey is fragmented across tools.</h2>
+ <p class="lead">An illustrative current-state map: information moves between messages, files, calls and manual records. The exact process should be validated with the practice.</p>
+ <div class="flow-diagram current-messy">
+  <div class="messy-label"><span class="label-dot"></span> Multiple entry points · no single source of truth</div>
+  <div class="messy-channels">
+   <div class="messy-channel"><span class="channel-icon">${icon("message-circle")}</span><div>WhatsApp / chat<small>Questions, photos, changes</small></div></div>
+   <div class="messy-channel"><span class="channel-icon">${icon("file-text")}</span><div>PDF / documents<small>Diet plan, portions, updates</small></div></div>
+   <div class="messy-channel"><span class="channel-icon">${icon("phone")}</span><div>Calls / in person<small>Verbal guidance, follow-ups</small></div></div>
+   <div class="messy-channel"><span class="channel-icon">${icon("mail")}</span><div>Email / attachments<small>Reports and extra details</small></div></div>
+   <div class="messy-channel"><span class="channel-icon">${icon("notebook-pen")}</span><div>Notes / spreadsheets<small>Manual progress tracking</small></div></div>
+  </div>
+  <svg class="messy-tangle" viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true">
+   <path d="M100 0 C100 42 330 30 400 118" stroke="#e2a28c"/><path d="M300 0 C300 58 180 40 420 118" stroke="#d5b3a7"/><path d="M500 0 C500 45 700 40 560 118" stroke="#e2a28c"/><path d="M700 0 C700 52 380 52 510 118" stroke="#c8b8a9"/><path d="M900 0 C900 52 610 35 590 118" stroke="#d5b3a7"/><path d="M90 0 C170 85 770 40 710 118" stroke="#e2a28c"/><path d="M890 0 C780 80 250 55 470 118" stroke="#c8b8a9"/>
+   <circle cx="100" cy="2" r="4" stroke="#e2a28c"/><circle cx="300" cy="2" r="4" stroke="#d5b3a7"/><circle cx="500" cy="2" r="4" stroke="#e2a28c"/><circle cx="700" cy="2" r="4" stroke="#c8b8a9"/><circle cx="900" cy="2" r="4" stroke="#d5b3a7"/>
+  </svg>
+  <div class="messy-consolidate"><span class="consolidate-icon">${icon("workflow")}</span><div><strong>Dietitian manually pieces the journey together</strong><span>Re-check messages · find the latest file · transfer notes · clarify what changed</span></div></div>
+  <div class="messy-label"><span class="label-dot"></span> Separate workstreams · repeated hand-offs</div>
+  <div class="messy-lanes">
+   <div class="messy-lane"><div class="messy-lane-head"><span class="lane-icon">${icon("clipboard-list")}</span>Meal plan</div><div class="messy-step">Create plan in a document</div><div class="messy-step">Export and send PDF</div><div class="messy-step warn">Client searches old messages</div><div class="messy-step end">Clarification in another chat</div></div>
+   <div class="messy-lane"><div class="messy-lane-head"><span class="lane-icon">${icon("message-circle")}</span>Questions</div><div class="messy-step">Ask in chat or call</div><div class="messy-step warn">Wait for a response</div><div class="messy-step">Guidance sits in conversation</div><div class="messy-step end">Context may be hard to find</div></div>
+   <div class="messy-lane"><div class="messy-lane-head"><span class="lane-icon">${icon("utensils")}</span>Meal changes</div><div class="messy-step">Ingredient unavailable</div><div class="messy-step">Send photo / voice note</div><div class="messy-step warn">Dietitian checks plan separately</div><div class="messy-step end">Alternative sent as a new message</div></div>
+   <div class="messy-lane"><div class="messy-lane-head"><span class="lane-icon">${icon("camera")}</span>Check-ins</div><div class="messy-step">Share photo or update</div><div class="messy-step">Review among other chats</div><div class="messy-step warn">Record details manually</div><div class="messy-step end">Feedback arrives separately</div></div>
+   <div class="messy-lane"><div class="messy-lane-head"><span class="lane-icon">${icon("chart-no-axes-combined")}</span>Progress</div><div class="messy-step">Track weight / habits</div><div class="messy-step">Update sheet or notes</div><div class="messy-step warn">Rebuild history at review</div><div class="messy-step end">Discuss next plan from fragments</div></div>
+  </div>
+  <div class="messy-footer">${icon("triangle-alert")} <div><strong>Experience gap:</strong> the client journey may be split across channels, while the dietitian has to manually reconnect the plan, conversations and progress. These are workflow assumptions to validate—not claims about the practice's exact tools.</div></div>
+ </div>
+</div>`
+},
+{
+id:"diet-app-user-flow",num:"15",cls:"userflow with-app",
+html:`<div class="slide-inner"><div class="eyebrow">14 · User flow · with Diet App</div><h2>One app. One connected care journey.</h2>
+ <p class="lead">The same daily actions now live around one approved plan and shared client record—so meal logs, questions, check-ins and progress stay connected to the care journey.</p>
+ <div class="flow-diagram unified-flow">
+  <div class="unified-label"><span class="label-dot"></span> One connected experience · from onboarding to review</div>
+  <div class="unified-start"><div class="flow-node start">${icon("smartphone")} Open Diet App</div></div>
+  <div class="flow-arrow" style="margin:0 auto"></div>
+  <div class="unified-onboard"><div class="flow-node">${icon("user-round-check")} Sign up / log in</div><div class="flow-node accent">${icon("clipboard-list")} Set goals & preferences</div><div class="flow-node plan">${icon("calendar-check")} View personal plan</div></div>
+  <div class="unified-hub-wrap"><div class="unified-hub"><div class="hub-top"><span class="hub-icon">${icon("layout-dashboard")}</span>Today's plan · one home for care</div><p>Approved meals, guidance and next steps stay together. Every action below connects back to the same client journey.</p><div class="hub-tags"><span>Dietitian-approved</span><span>Client-specific</span><span>Always accessible</span></div></div></div>
+  <div class="unified-features">
+   <div class="unified-feature"><div class="feature-head"><span class="feature-icon">${icon("book-open")}</span>Diary</div><div class="feature-step">Open today's meals</div><div class="feature-step">Log food / scan meal*</div><div class="feature-step">Entry saved to daily record</div></div>
+   <div class="unified-feature"><div class="feature-head"><span class="feature-icon">${icon("chef-hat")}</span>Recipes</div><div class="feature-step">Choose a planned recipe</div><div class="feature-step">See ingredients & steps</div><div class="feature-step">Guidance stays with the plan</div></div>
+   <div class="unified-feature"><div class="feature-head"><span class="feature-icon">${icon("message-square-text")}</span>Quick action</div><div class="feature-step">Ask or request a change</div><div class="feature-step">AI / scan tools if included*</div><div class="feature-step">Response linked to care context</div></div>
+   <div class="unified-feature"><div class="feature-head"><span class="feature-icon">${icon("chart-no-axes-combined")}</span>Progress</div><div class="feature-step">Log weight & check-ins</div><div class="feature-step">Add a photo or note</div><div class="feature-step">Trends ready for review</div></div>
+   <div class="unified-feature"><div class="feature-head"><span class="feature-icon">${icon("sliders-horizontal")}</span>Profile</div><div class="feature-step">Update preferences</div><div class="feature-step">Manage reminders & settings</div><div class="feature-step">Plan stays relevant</div></div>
+  </div>
+  <div class="unified-record"><div class="record-side">${icon("user-round")}<div>Client activity<small>Meals · questions · check-ins · progress</small></div></div><div class="record-center">Shared record ↔</div><div class="record-side">${icon("stethoscope")}<div>Dietitian workspace<small>Review updates · approve changes · adjust plan</small></div></div></div>
+  <div class="unified-footer">${icon("shield-check")} <div><strong>One connected loop:</strong> client activity updates the shared record, the dietitian reviews it in context, and approved plan changes flow back to the client. AI, scanning and other marked tools depend on the selected package and agreed scope.</div></div>
+ </div>
+</div>`
+},
+{
+id:"delivery-phases-detail",num:"16",cls:"phase-plan",
+html:`<div class="slide-inner"><div class="eyebrow">16 · Delivery roadmap</div><h2>Build in clear, valuable stages.</h2>
+ <p class="lead">Start with the essential care journey, introduce Pro intelligence next, then expand engagement and business capabilities as needed.</p>
+ <div class="phase-roadmap" aria-label="Four-phase delivery roadmap">
+  <article class="roadmap-band band-one">
+   <div class="roadmap-meta"><div class="roadmap-index">01</div><div class="roadmap-title"><div class="roadmap-kicker">FOUNDATION</div><h3>Core MVP</h3><p>Establish the complete client–dietitian journey.</p></div><span class="roadmap-label">CORE</span></div>
+   <div class="roadmap-flow" aria-label="Core MVP sequence">
+    <div class="roadmap-flow-line"><span>Authentication</span><b>→</b><span>Onboarding</span><b>→</b><span>Client Profile</span><b>→</b><span>Dietitian</span><b>→</b><span>Diet Plan</span></div>
+    <div class="roadmap-flow-line"><span>Today</span><b>→</b><span>Food Journal</span><b>→</b><span>Progress</span><b>→</b><span>Chat</span><b>→</b><span>Reports</span></div>
+   </div>
+  </article>
+  <article class="roadmap-band band-two">
+   <div class="roadmap-meta"><div class="roadmap-index">02</div><div class="roadmap-title"><div class="roadmap-kicker">PRO SUBSCRIPTION</div><h3>Intelligence</h3><p>Make food discovery and meal choices smarter.</p></div><span class="roadmap-label">PRO</span></div>
+   <div class="roadmap-flow" aria-label="Intelligence sequence">
+    <div class="roadmap-flow-line"><span>AI Scanner</span><b>→</b><span>Barcode</span><b>→</b><span>Food Database</span><b>→</b><span>Alternatives</span></div>
+    <div class="roadmap-flow-line"><span>Recipes</span><b>→</b><span>Meal Selection</span><b>→</b><span>Recommendations</span></div>
+   </div>
+  </article>
+  <article class="roadmap-band band-three">
+   <div class="roadmap-meta"><div class="roadmap-index">03</div><div class="roadmap-title"><div class="roadmap-kicker">RETENTION</div><h3>Habits & engagement</h3><p>Support consistency beyond the daily plan.</p></div><span class="roadmap-label">ADD-ON</span></div>
+   <div class="roadmap-flow" aria-label="Engagement sequence">
+    <div class="roadmap-flow-line"><span>Streaks</span><b>→</b><span>Notifications</span><b>→</b><span>Fasting</span><b>→</b><span>Flexible Meals</span></div>
+    <div class="roadmap-flow-line"><span>Advanced Progress Journey</span></div>
+   </div>
+  </article>
+  <article class="roadmap-band band-four">
+   <div class="roadmap-meta"><div class="roadmap-index">04</div><div class="roadmap-title"><div class="roadmap-kicker">COMMERCIAL EXPANSION</div><h3>Business & scale</h3><p>Enable monetisation and operational growth.</p></div><span class="roadmap-label">OPTIONAL</span></div>
+   <div class="roadmap-flow" aria-label="Business sequence">
+    <div class="roadmap-flow-line"><span>Subscriptions</span><b>→</b><span>Payments</span><b>→</b><span>Marketplace</span><b>→</b><span>Orders</span></div>
+    <div class="roadmap-flow-line"><span>Coupons</span><b>→</b><span>Advanced Admin</span></div>
+   </div>
+  </article>
+ </div>
+ <div class="roadmap-footnotes"><div class="roadmap-note note-pro"><span class="note-mark">✓</span><p><strong>Pro-first approach</strong><br>Phase 1 establishes the foundation; Phase 2 introduces the proposed Pro intelligence features.</p></div><div class="roadmap-note"><span class="note-mark">i</span><p><strong>Packages & add-ons</strong><br>Features depend on the selected Basic, Pro or Premium package. Phases describe build order, not subscription tiers; confirm inclusions and scope before development.</p></div></div>
+</div>`
+}
+];
+
+let current=0;
+let demoStep=0;
+const app=document.getElementById("app");
+const demoScreens=[
+ '<div class="demo-layout"><div class="demo-side"><div class="demo-kicker">Dietitian dashboard</div><h3>Clients today</h3><p class="demo-copy">Client records show plans, meal updates and reviews.</p><div class="demo-list"><div class="demo-line selected">Maya Nair · Berlin<br>Lunch plan needs review</div><div class="demo-line">Riya Shah · Pune<br>Progress review on Friday</div></div></div><div class="demo-main"><div class="demo-kicker">Client profile · Maya Nair</div><h3>Food choices that fit her location</h3><p class="demo-copy">A fictional vegetarian client living in Germany. The dietitian records her routine before assigning a plan.</p><div class="demo-detail"><div><b>Location and time</b>Berlin · Europe/Berlin</div><div><b>Food preferences</b>Vegetarian · Indian and German foods</div><div><b>Measurements</b>Weight in kg; agreed progress measures</div><div><b>Care status</b>Active client · review due</div></div><div class="demo-actions"><button class="demo-action primary" type="button" data-demo-step="1">Open her plan →</button></div></div></div>',
+ '<div class="demo-layout"><div class="demo-side"><div class="demo-kicker">Dietitian view</div><h3>Plan assignment</h3><p class="demo-copy">The history stays in the client record.</p><div class="demo-list"><div class="demo-line">Current plan · Week 4</div><div class="demo-line selected">Previous plan · 04 Aug 2026</div><div class="demo-line">Next review · Friday</div></div></div><div class="demo-main"><div class="demo-kicker">Plan builder · Maya Nair</div><h3>Check the plan before reusing it</h3><div class="demo-alert">History alert: this plan was assigned to Maya on 04 Aug 2026. Review that version, revise it or intentionally use it again.</div><div class="demo-detail"><div><b>Lunch · at home</b>Vegetable and lentil bowl · portion and recipe steps</div><div><b>Lunch · travelling</b>Dietitian-approved vegetarian wrap</div><div><b>Guidance</b>Preparation steps and optional video link</div><div><b>Plan record</b>Assignment dates and revisions are visible</div></div><div class="demo-actions"><button class="demo-action primary" type="button" data-demo-step="2">See the client day →</button></div></div></div>',
+ '<div class="demo-layout"><div class="demo-side"><div class="demo-kicker">Client view · Berlin</div><h3>Today</h3><div class="demo-list"><div class="demo-line">Breakfast · checked in</div><div class="demo-line selected">Lunch · vegetable and lentil bowl</div><div class="demo-line">Dinner · planned</div></div><p class="demo-copy" style="margin-top:12px">Meal times follow her local time.</p></div><div class="demo-main"><div class="demo-kicker">Lunch and check-in</div><h3>The planned meal is unavailable</h3><p class="demo-copy">Maya can open the recipe and video, use the approved travel option, or ask her dietitian for help. Her check-in can include a photo and a note about what she ate.</p><div class="demo-detail"><div><b>Planned meal</b>Vegetable and lentil bowl · recipe and video</div><div><b>Sample check-in</b>Meal status · optional photo · note</div></div><div class="demo-options" id="demo-options" hidden><b>Available today:</b> Dietitian-approved vegetarian wrap for travel. If that also fails, message the dietitian for a replacement.</div><div class="demo-actions"><button class="demo-action" type="button" data-demo-action="options">Meal not possible? See options</button><button class="demo-action primary" type="button" data-demo-step="3">See the follow-up →</button></div></div></div>',
+ '<div class="demo-layout"><div class="demo-side"><div class="demo-kicker">Dietitian view</div><h3>Client updates</h3><p class="demo-copy">Check-ins and questions appear beside the plan they refer to.</p><div class="demo-list"><div class="demo-line selected">Maya · lunch changed today</div><div class="demo-line">Maya · progress review due</div></div></div><div class="demo-main"><div class="demo-kicker">Chat and progress</div><h3>Use the update in the next plan</h3><div class="demo-detail"><div><b>Client message</b>The lunch ingredient was unavailable. I used the approved wrap.</div><div><b>Dietitian reply</b>Thanks. I will account for the change at your review.</div><div><b>Progress journey · sample</b>Weight: 76.0 → 75.4 kg; check-ins and optional photos</div><div><b>Next action</b>Review the trend and dated plan history, then revise the plan.</div></div><div class="demo-actions"><button class="demo-action primary" type="button" data-demo-step="0">Back to client record ↺</button></div></div></div>'
+];
+
+function renderDemo(){
+ const stage=document.getElementById("demo-stage");
+ if(!stage)return;
+ stage.innerHTML=demoScreens[demoStep];
+ app.querySelectorAll(".demo-step").forEach((button,i)=>{
+  button.classList.toggle("active",i===demoStep);
+  if(i===demoStep)button.setAttribute("aria-current","step");
+  else button.removeAttribute("aria-current");
+ });
+}
+app.addEventListener("click",event=>{
+ const button=event.target.closest("[data-demo-step], [data-demo-action]");
+ if(!button)return;
+ if(button.dataset.demoStep!==undefined){
+  demoStep=Number(button.dataset.demoStep);
+  renderDemo();
+ }else if(button.dataset.demoAction==="options"){
+  const options=document.getElementById("demo-options");
+  if(options)options.hidden=false;
+ }
+});
+
+function header(s){
+ return `<header class="header"><a class="logo" href="#cover"><img src="${logo}" alt="Infobytes Technosys"></a><div class="counter">${s.num} / ${String(slides.length).padStart(2,"0")}</div></header>`;
+}
+function nav(i){
+ const prev=i>0?`#${slides[i-1].id}`:"#";
+ const next=i<slides.length-1?`#${slides[i+1].id}`:"#";
+ return `<div class="nav">
+  <a class="navbtn ${i===0?"disabled":""}" href="${prev}">← Prev</a>
+  <div class="dots">${slides.map((s,j)=>`<a class="dot ${j===i?"active":""}" href="#${s.id}" title="Slide ${j+1}"></a>`).join("")}</div>
+  <a class="navbtn primary ${i===slides.length-1?"disabled":""}" href="${next}">Next →</a>
+ </div>`;
+}
+function fitSlideToViewport(){
+ const slide=document.querySelector('.slide[style*="display:flex"]');
+ if(!slide)return;
+ const inner=slide.querySelector('.slide-inner');
+ if(!inner)return;
+ inner.style.transform='none';
+ const slideStyle=getComputedStyle(slide);
+ const padX=(parseFloat(slideStyle.paddingLeft)||0)+(parseFloat(slideStyle.paddingRight)||0);
+ const padY=(parseFloat(slideStyle.paddingTop)||0)+(parseFloat(slideStyle.paddingBottom)||0);
+ const availableWidth=Math.max(1,slide.clientWidth-padX);
+ const availableHeight=Math.max(1,slide.clientHeight-padY);
+ const rect=inner.getBoundingClientRect();
+ const contentWidth=Math.max(inner.scrollWidth,rect.width);
+ const contentHeight=Math.max(inner.scrollHeight,rect.height);
+ const scale=Math.min(1,availableWidth/contentWidth,availableHeight/contentHeight);
+ inner.style.transform=`scale(${Math.max(.35,scale)})`;
+}
+function render(){
+ const hash=location.hash.replace("#","");
+ const found=slides.findIndex(s=>s.id===hash);
+ if(found>=0) current=found;
+ else current=0;
+ app.innerHTML=slides.map((s,i)=>`<section class="slide ${s.cls}" id="${s.id}" style="display:${i===current?"flex":"none"}">${header(s)}${s.html}${nav(i)}</section>`).join("");
+ renderDemo();
+ document.title=`Diet App — ${slides[current].num}/${String(slides.length).padStart(2,"0")}`;
+ window.scrollTo(0,0);
+ requestAnimationFrame(fitSlideToViewport);
+}
+window.addEventListener("hashchange",render);
+document.addEventListener("keydown",e=>{
+ if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))return;
+ if(document.activeElement.closest(".demo-shell"))return;
+ if(e.key==="ArrowRight"||e.key==="PageDown"){e.preventDefault();if(current<slides.length-1)location.hash=slides[current+1].id}
+ if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();if(current>0)location.hash=slides[current-1].id}
+});
+render();
+window.addEventListener('resize',()=>requestAnimationFrame(fitSlideToViewport));
+window.addEventListener('orientationchange',()=>setTimeout(fitSlideToViewport,120));
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>requestAnimationFrame(fitSlideToViewport));
+</script>
+</body>
+</html>
